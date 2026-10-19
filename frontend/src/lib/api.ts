@@ -5,7 +5,22 @@ import {
   User, AuthTokenResponse, UserLoginRequest, UserRegisterRequest
 } from './types';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const DEFAULT_API_URL =
+  typeof window !== 'undefined' &&
+  window.location.hostname !== 'localhost' &&
+  window.location.hostname !== '127.0.0.1'
+    ? 'https://folio-v52b.onrender.com/api'
+    : 'http://localhost:8000/api';
+
+export const API_BASE = (process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL).replace(/\/+$/, '');
+
+export function getBackendBaseUrl(): string {
+  return API_BASE.replace(/\/api\/?$/, '');
+}
+
+export function getDocumentDownloadUrl(documentId: string): string {
+  return `${API_BASE}/documents/${documentId}/download`;
+}
 
 export function getStoredToken(): string | null {
   if (typeof window !== 'undefined') {
@@ -286,5 +301,23 @@ export const api = {
       body: JSON.stringify({ model }),
     });
     return handleResponse<{ message: string; success: boolean }>(res);
+  },
+
+  getBackendBaseUrl(): string {
+    return getBackendBaseUrl();
+  },
+
+  getDocumentDownloadUrl(documentId: string): string {
+    return getDocumentDownloadUrl(documentId);
+  },
+
+  async checkHealth(): Promise<boolean> {
+    try {
+      const rootUrl = getBackendBaseUrl();
+      const res = await fetch(`${rootUrl}/health`);
+      return res.ok;
+    } catch {
+      return false;
+    }
   },
 };

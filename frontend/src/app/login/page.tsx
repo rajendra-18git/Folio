@@ -46,7 +46,7 @@ export default function LoginPage() {
       const msg = err?.message || '';
       if (msg === 'Failed to fetch' || msg.toLowerCase().includes('fetch') || msg.toLowerCase().includes('network')) {
         setErrorMessage(
-          'Cannot connect to backend server. Please verify the FastAPI backend server is running on http://localhost:8000.'
+          'Cannot connect to backend server. Please verify the backend service is running.'
         );
       } else {
         setErrorMessage(msg || 'Login failed. Please check your credentials.');

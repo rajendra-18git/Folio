@@ -36,41 +36,26 @@ export function LandingHero() {
     // GSAP timeline for hero entrance
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    tl.fromTo(
-      badgeRef.current,
-      { y: -20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6 }
-    )
-      .fromTo(
-        headlineRef.current?.querySelectorAll('.hero-line') || [],
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15 },
-        '-=0.3'
-      )
-      .fromTo(
-        descRef.current,
-        { y: 25, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7 },
-        '-=0.4'
-      )
-      .fromTo(
-        actionsRef.current,
-        { y: 25, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 },
-        '-=0.3'
-      )
-      .fromTo(
-        trustRef.current,
-        { y: 15, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5 },
-        '-=0.2'
-      )
-      .fromTo(
-        cardWrapRef.current,
-        { x: 80, opacity: 0, rotateY: -8 },
-        { x: 0, opacity: 1, rotateY: 0, duration: 1, ease: 'power2.out' },
-        '-=0.8'
-      );
+    // GSAP entrance animation (from hidden offset to naturally visible)
+    if (badgeRef.current) {
+      tl.from(badgeRef.current, { y: -20, opacity: 0, duration: 0.6 });
+    }
+    const lines = headlineRef.current?.querySelectorAll('.hero-line');
+    if (lines && lines.length > 0) {
+      tl.from(lines, { y: 40, opacity: 0, duration: 0.8, stagger: 0.15 }, '-=0.3');
+    }
+    if (descRef.current) {
+      tl.from(descRef.current, { y: 25, opacity: 0, duration: 0.7 }, '-=0.4');
+    }
+    if (actionsRef.current) {
+      tl.from(actionsRef.current, { y: 25, opacity: 0, duration: 0.6 }, '-=0.3');
+    }
+    if (trustRef.current) {
+      tl.from(trustRef.current, { y: 15, opacity: 0, duration: 0.5 }, '-=0.2');
+    }
+    if (cardWrapRef.current) {
+      tl.from(cardWrapRef.current, { x: 80, opacity: 0, rotateY: -8, duration: 1, ease: 'power2.out' }, '-=0.8');
+    }
 
     // Parallax on scroll for the product card
     const handleScroll = () => {
@@ -161,13 +146,13 @@ export function LandingHero() {
             {/* Badge */}
             <div
               ref={badgeRef}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-sky-50 dark:bg-[#0B1936]/90 border border-sky-200 dark:border-[#60D5FA]/30 text-sky-800 dark:text-[#60D5FA] text-xs font-bold tracking-widest uppercase shadow-sm dark:shadow-xl backdrop-blur-md opacity-0"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-sky-50 dark:bg-[#0B1936]/90 border border-sky-200 dark:border-[#60D5FA]/30 text-sky-800 dark:text-[#60D5FA] text-xs font-bold tracking-widest uppercase shadow-sm dark:shadow-xl backdrop-blur-md"
             >
               <span className="flex h-2.5 w-2.5 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-500 dark:bg-[#60D5FA] opacity-75" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-sky-600 dark:bg-[#60D5FA]" />
               </span>
-              <span className="font-absans tracking-wider text-[11px]">LAUNCHING NOW · FOLIO 2.0</span>
+              <span className="font-sans font-semibold tracking-wider text-[11px]">LAUNCHING NOW · FOLIO 2.0</span>
             </div>
 
             {/* Headline */}
@@ -184,13 +169,13 @@ export function LandingHero() {
             {/* Supporting Copy */}
             <p
               ref={descRef}
-              className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl font-normal font-absans leading-relaxed opacity-0"
+              className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl font-normal leading-relaxed"
             >
               Transform PDFs, research papers, textbooks, and reports into knowledge you can explore, question, and understand. Every answer backed by exact page-level visual proofs with zero hallucination.
             </p>
 
             {/* Actions */}
-            <div ref={actionsRef} className="pt-2 flex flex-wrap items-center gap-4 opacity-0">
+            <div ref={actionsRef} className="pt-2 flex flex-wrap items-center gap-4">
               <Link
                 ref={buttonRef}
                 onMouseMove={handleBtnMouseMove}
@@ -205,7 +190,7 @@ export function LandingHero() {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none" />
                 <span className="relative z-10 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-sky-200 dark:text-[#60D5FA]" />
-                  <span className="font-absans tracking-wide text-[15px]">Start for Free</span>
+                  <span className="font-sans font-semibold tracking-normal text-[15px]">Start for Free</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
@@ -220,7 +205,7 @@ export function LandingHero() {
             </div>
 
             {/* Trust Highlights */}
-            <div ref={trustRef} className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2.5 text-xs text-[var(--color-text-secondary)] opacity-0">
+            <div ref={trustRef} className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2.5 text-xs text-[var(--color-text-secondary)]">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-sky-600 dark:text-[#60D5FA]" />
                 <span>Zero-Hallucination Evidence Grounding</span>
@@ -239,7 +224,7 @@ export function LandingHero() {
           {/* Right Column: Floating Product Card */}
           <div
             ref={cardWrapRef}
-            className="lg:col-span-6 relative flex items-center justify-center opacity-0"
+            className="lg:col-span-6 relative flex items-center justify-center"
             onMouseMove={handleCardMouseMove}
             onMouseLeave={handleCardMouseLeave}
           >

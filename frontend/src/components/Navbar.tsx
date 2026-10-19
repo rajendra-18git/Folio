@@ -4,17 +4,15 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { UploadCloud, LogOut, User as UserIcon, LogIn } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { api } from '@/lib/api';
 
 export function Navbar() {
   const [isBackendHealthy, setIsBackendHealthy] = useState<boolean | null>(null);
   const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
-    fetch('http://localhost:8000/health')
-      .then((res) => {
-        if (res.ok) setIsBackendHealthy(true);
-        else setIsBackendHealthy(false);
-      })
+    api.checkHealth()
+      .then((healthy) => setIsBackendHealthy(healthy))
       .catch(() => setIsBackendHealthy(false));
   }, []);
 

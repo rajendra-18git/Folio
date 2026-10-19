@@ -14,7 +14,7 @@ export function PdfViewerModal({ citation, onClose }: PdfViewerModalProps) {
   if (!citation) return null;
 
   const imageUrl = api.getPageImageUrl(citation.document_id, citation.page_number);
-  const downloadUrl = `http://localhost:8000/api/documents/${citation.document_id}/download`;
+  const downloadUrl = api.getDocumentDownloadUrl(citation.document_id);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">

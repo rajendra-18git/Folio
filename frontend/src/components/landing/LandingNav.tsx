@@ -82,7 +82,7 @@ export function LandingNav() {
         </nav>
 
         {/* Right: Conversion CTAs & Theme Toggle */}
-        <div className="hidden md:flex items-center gap-4 font-absans">
+        <div className="hidden md:flex items-center gap-4 font-sans">
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}

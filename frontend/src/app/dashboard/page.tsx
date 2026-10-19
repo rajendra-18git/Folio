@@ -44,8 +44,8 @@ export default function DashboardPage() {
     loadData();
 
     // Check backend health
-    fetch('http://localhost:8000/health')
-      .then((res) => setIsBackendHealthy(res.ok))
+    api.checkHealth()
+      .then((healthy) => setIsBackendHealthy(healthy))
       .catch(() => setIsBackendHealthy(false));
 
     // Nav state
@@ -106,7 +106,7 @@ export default function DashboardPage() {
     setCreatingSample(true);
     showToast('Generating sample study document...', 'info');
     try {
-      const res = await fetch('http://localhost:8000/api/documents/upload', {
+      const res = await fetch(`${api.getBackendBaseUrl()}/api/documents/upload`, {
         method: 'POST',
         body: (() => {
           const formData = new FormData();

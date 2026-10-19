@@ -269,7 +269,7 @@ export default function DocumentsPage() {
                         <Eye className="w-4 h-4" />
                       </Link>
                       <a
-                        href={`http://localhost:8000/api/documents/${doc.id}/download`}
+                        href={api.getDocumentDownloadUrl(doc.id)}
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition"

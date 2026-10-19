@@ -231,7 +231,7 @@ function MultimodalContent() {
             </div>
             <div className="w-full bg-slate-50 p-2 rounded-2xl border border-slate-200/70 flex items-center justify-center min-h-[400px]">
               <img
-                src={`http://localhost:8000${result.image_preview_url}`}
+                src={`${api.getBackendBaseUrl()}${result.image_preview_url}`}
                 alt={`Page ${result.page_number} preview`}
                 className="max-h-[550px] w-auto object-contain rounded-xl shadow-xs border border-slate-200 bg-white"
               />

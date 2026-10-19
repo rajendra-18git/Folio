@@ -39,8 +39,8 @@ export function FolioShell({
 
   useEffect(() => {
     // Check backend health
-    fetch('http://localhost:8000/health')
-      .then((res) => setIsBackendHealthy(res.ok))
+    api.checkHealth()
+      .then((healthy) => setIsBackendHealthy(healthy))
       .catch(() => setIsBackendHealthy(false));
 
     // Check engine status
