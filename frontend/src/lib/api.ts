@@ -6,17 +6,26 @@ import {
 } from './types';
 
 export function getApiBase(): string {
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL.replace(/\/+$/, '');
-  }
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+
   if (typeof window !== 'undefined') {
+    const isHttps = window.location.protocol === 'https:';
     const isLocal =
       window.location.hostname === 'localhost' ||
       window.location.hostname === '127.0.0.1';
-    return isLocal
-      ? 'http://localhost:8000/api'
-      : 'https://folio-v52b.onrender.com/api';
+
+    if (isHttps || !isLocal) {
+      if (envUrl && envUrl.startsWith('https://')) {
+        return envUrl.replace(/\/+$/, '');
+      }
+      return 'https://folio-v52b.onrender.com/api';
+    }
   }
+
+  if (envUrl) {
+    return envUrl.replace(/\/+$/, '');
+  }
+
   return process.env.NODE_ENV === 'production'
     ? 'https://folio-v52b.onrender.com/api'
     : 'http://localhost:8000/api';
