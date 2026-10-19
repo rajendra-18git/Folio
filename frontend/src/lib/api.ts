@@ -2,7 +2,8 @@ import {
   DocumentItem, DocumentDetail, Conversation, ChatMessage,
   StudyGenerationResponse, CompareResponse, MultimodalAnalysisResponse,
   EvaluationRun, TestCase, SettingsStatus,
-  User, AuthTokenResponse, UserLoginRequest, UserRegisterRequest
+  User, AuthTokenResponse, UserLoginRequest, UserRegisterRequest,
+  SendOtpRequest, SendOtpResponse, VerifyOtpLoginRequest, RegisterWithOtpRequest
 } from './types';
 
 export function getApiBase(): string {
@@ -18,7 +19,7 @@ export function getApiBase(): string {
       if (envUrl && envUrl.startsWith('https://')) {
         return envUrl.replace(/\/+$/, '');
       }
-      return 'https://folio-v52b.onrender.com/api';
+      return 'https://folio-1-63by.onrender.com/api';
     }
   }
 
@@ -27,7 +28,7 @@ export function getApiBase(): string {
   }
 
   return process.env.NODE_ENV === 'production'
-    ? 'https://folio-v52b.onrender.com/api'
+    ? 'https://folio-1-63by.onrender.com/api'
     : 'http://localhost:8000/api';
 }
 
@@ -104,6 +105,37 @@ export const api = {
 
     async login(data: UserLoginRequest): Promise<AuthTokenResponse> {
       const res = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const authData = await handleResponse<AuthTokenResponse>(res);
+      setStoredToken(authData.access_token);
+      return authData;
+    },
+
+    async sendOtp(data: SendOtpRequest): Promise<SendOtpResponse> {
+      const res = await fetch(`${API_BASE}/auth/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      return handleResponse<SendOtpResponse>(res);
+    },
+
+    async verifyOtpLogin(data: VerifyOtpLoginRequest): Promise<AuthTokenResponse> {
+      const res = await fetch(`${API_BASE}/auth/verify-otp-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const authData = await handleResponse<AuthTokenResponse>(res);
+      setStoredToken(authData.access_token);
+      return authData;
+    },
+
+    async registerWithOtp(data: RegisterWithOtpRequest): Promise<AuthTokenResponse> {
+      const res = await fetch(`${API_BASE}/auth/register-with-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

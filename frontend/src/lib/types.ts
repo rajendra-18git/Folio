@@ -229,3 +229,29 @@ export interface UserRegisterRequest {
   full_name?: string;
 }
 
+export interface SendOtpRequest {
+  email: string;
+  purpose?: 'login' | 'register';
+}
+
+export interface SendOtpResponse {
+  message: string;
+  email: string;
+  expires_in_seconds: number;
+  email_sent: boolean;
+  debug_hint?: string | null;
+}
+
+export interface VerifyOtpLoginRequest {
+  email: string;
+  otp_code: string;
+}
+
+export interface RegisterWithOtpRequest {
+  email: string;
+  password: string;
+  full_name?: string;
+  otp_code: string;
+}
+
+

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, AuthTokenResponse } from '../lib/types';
+import { User, AuthTokenResponse, SendOtpResponse } from '../lib/types';
 import { api, getStoredToken, setStoredToken } from '../lib/api';
 
 interface AuthContextType {
@@ -11,6 +11,9 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<AuthTokenResponse>;
   register: (email: string, password: string, fullName?: string) => Promise<AuthTokenResponse>;
+  sendOtp: (email: string, purpose?: 'login' | 'register') => Promise<SendOtpResponse>;
+  loginWithOtp: (email: string, otpCode: string) => Promise<AuthTokenResponse>;
+  registerWithOtp: (email: string, password: string, otpCode: string, fullName?: string) => Promise<AuthTokenResponse>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -73,6 +76,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const sendOtp = async (email: string, purpose: 'login' | 'register' = 'login'): Promise<SendOtpResponse> => {
+    return api.auth.sendOtp({ email, purpose });
+  };
+
+  const loginWithOtp = async (email: string, otpCode: string): Promise<AuthTokenResponse> => {
+    setIsLoading(true);
+    try {
+      const response = await api.auth.verifyOtpLogin({ email, otp_code: otpCode });
+      setToken(response.access_token);
+      setUser(response.user);
+      return response;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const registerWithOtp = async (
+    email: string,
+    password: string,
+    otpCode: string,
+    fullName?: string
+  ): Promise<AuthTokenResponse> => {
+    setIsLoading(true);
+    try {
+      const response = await api.auth.registerWithOtp({
+        email,
+        password,
+        otp_code: otpCode,
+        full_name: fullName,
+      });
+      setToken(response.access_token);
+      setUser(response.user);
+      return response;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     api.auth.logout();
     setToken(null);
@@ -97,6 +138,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user && !!token,
         login,
         register,
+        sendOtp,
+        loginWithOtp,
+        registerWithOtp,
         logout,
         refreshUser,
       }}
