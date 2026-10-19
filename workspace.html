@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Folio — AI Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Sora:wght@600;700&display=swap">
+<link rel="stylesheet" href="css/folio.css">
+</head>
+<body>
+
+<div class="app" id="app" data-nav="open">
+
+  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Sidebar">
+    <div>
+      <div class="brand">
+        <svg role="img" aria-label="Folio logo mark" width="36" height="36" viewBox="0 0 120 120">
+          <path d="M32 8H72L102 38V98A14 14 0 0 1 88 112H32A14 14 0 0 1 18 98V22A14 14 0 0 1 32 8Z" fill="#2F5BFF"/>
+          <path d="M72 8V38H102Z" fill="#1C3FCF"/>
+          <rect x="38" y="48" width="12" height="50" rx="3" fill="#fff"/>
+          <rect x="38" y="48" width="38" height="12" rx="3" fill="#fff"/>
+          <rect x="38" y="70" width="26" height="11" rx="3" fill="#fff"/>
+        </svg>
+        <div>
+          <div class="brand-name">Folio</div>
+          <div class="brand-sub">Document intelligence</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main">
+        <a href="dashboard.html">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v4h4"/></svg>
+          <span>Documents</span>
+        </a>
+        <a href="workspace.html" aria-current="page">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V5Z"/></svg>
+          <span>AI Workspace</span>
+        </a>
+        <a href="#">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5Z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>
+          <span>Study Assistant</span>
+        </a>
+        <a href="compare.html">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="16" rx="2"/></svg>
+          <span>Doc Comparison</span>
+        </a>
+        <a href="#">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Visual Analysis</span>
+        </a>
+        <a href="evaluations.html">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>
+          <span>Evaluations</span>
+        </a>
+        <a href="#">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="engine">
+      <strong><span class="dot"></span>AI engine active</strong>
+      <p>Grounded reasoning and multimodal analysis are enabled.</p>
+      <a href="#">Manage settings →</a>
+    </div>
+  </aside>
+
+  <div class="main">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button type="button" class="icon-btn" id="navToggle" aria-controls="sidebar" aria-expanded="true" aria-label="Close sidebar">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A4258" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg>
+        </button>
+        <h2>AI Workspace</h2>
+        <span class="status"><span class="dot"></span>Backend connected</span>
+      </div>
+      <div class="topbar-right">
+        <button type="button" class="btn-primary">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 20h14"/></svg>
+          Upload PDF
+        </button>
+        <div class="avatar" role="img" aria-label="Account">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C3FCF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        </div>
+      </div>
+    </header>
+
+    <main class="ws">
+      <div class="ws-side">
+        <button type="button" class="btn-primary lg">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          New discussion
+        </button>
+
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Target sources</div><a href="#">All documents</a></div>
+          <div id="sourceList">
+            <label class="src"><input type="checkbox" checked><span>quantum_guide.pdf</span></label>
+            <label class="src"><input type="checkbox"><span>SQL_Basic_Queries.pdf</span></label>
+            <label class="src"><input type="checkbox"><span>UHV-2-Mid-I Notes.pdf</span></label>
+            <label class="src"><input type="checkbox"><span>AI_Architecture_Overview.pdf</span></label>
+          </div>
+        </div>
+
+        <div class="panel grow">
+          <div class="panel-title">History</div>
+          <div id="historyList">
+            <button type="button" class="hi on" data-text="What is quantum computing?"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V5Z"/></svg><span>What is quantum computing?</span></button>
+            <button type="button" class="hi" data-text="List some of the query requirements"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V5Z"/></svg><span>List some of the query requirements</span></button>
+            <button type="button" class="hi" data-text="What SQL commands are used?"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V5Z"/></svg><span>What SQL commands are used?</span></button>
+            <button type="button" class="hi" data-text="Explain SELECT query"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V5Z"/></svg><span>Explain SELECT query</span></button>
+            <button type="button" class="hi" data-text="What is SQL?"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V5Z"/></svg><span>What is SQL?</span></button>
+            <button type="button" class="hi" data-text="What are the core conclusions?"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V5Z"/></svg><span>What are the core conclusions?</span></button>
+          </div>
+        </div>
+      </div>
+
+      <section class="chat" aria-label="Chat">
+        <div class="chat-head">
+          <h2 id="chatTitle">What is quantum computing?</h2>
+          <span id="sourceCount">1 source selected</span>
+        </div>
+
+        <div class="chat-body">
+          <div class="msg-user" id="userMsg">What is quantum computing?</div>
+
+          <div class="msg-bot">
+            <svg role="img" aria-label="Folio" width="34" height="34" viewBox="0 0 120 120">
+              <path d="M32 8H72L102 38V98A14 14 0 0 1 88 112H32A14 14 0 0 1 18 98V22A14 14 0 0 1 32 8Z" fill="#2F5BFF"/>
+              <path d="M72 8V38H102Z" fill="#1C3FCF"/>
+              <rect x="38" y="48" width="12" height="50" rx="3" fill="#fff"/>
+              <rect x="38" y="48" width="38" height="12" rx="3" fill="#fff"/>
+              <rect x="38" y="70" width="26" height="11" rx="3" fill="#fff"/>
+            </svg>
+            <div class="msg-bot-body">
+              <h3>Retrieved grounded passages</h3>
+
+              <div>
+                <div class="passage-meta">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F5BFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v4h4"/></svg>
+                  quantum_guide.pdf <em>Page 1</em>
+                </div>
+                <p class="passage">“Quantum Architecture - Page 1. Exploring quantum entanglement and algorithmic speedups. Quantum computing relies on qubits and superposition principles.”</p>
+              </div>
+
+              <div>
+                <div class="passage-meta">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F5BFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v4h4"/></svg>
+                  quantum_guide.pdf <em>Page 2</em>
+                </div>
+                <p class="passage">“Quantum Architecture - Page 2. Decoherence is a major challenge in quantum scaling. Superconducting circuits operate at millikelvin temperatures.”</p>
+              </div>
+
+              <div class="notice">
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3FCF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+                <span>Add your Gemini API key in <a href="#">Settings</a> to get full synthesis, reasoning and multi-document answers.</span>
+              </div>
+
+              <div>
+                <div class="cite-label">Verified citations (2)</div>
+                <div class="cites">
+                  <a href="#" class="cite">quantum_guide.pdf <b>p.1</b></a>
+                  <a href="#" class="cite">quantum_guide.pdf <b>p.2</b></a>
+                </div>
+              </div>
+
+              <div class="msg-meta">
+                <div class="left">
+                  <span class="ok"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B6B43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6Z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg>Extracted grounding</span>
+                  <span>15 ms</span>
+                  <span>318 tokens</span>
+                </div>
+                <button type="button" class="copy-btn">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3A4258" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <input class="input" type="text" aria-label="Ask a question about your uploaded documents" placeholder="Ask a question about your uploaded documents">
+          <button type="button" class="send" aria-label="Send question">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

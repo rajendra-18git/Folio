@@ -1,0 +1,15 @@
+.env
+.env.*
+*.env
+!*.env.example
+*.db
+*.sqlite*
+venv/
+env/
+__pycache__/
+*.pyc
+data/uploads/*
+!data/uploads/.gitkeep
+data/chroma/*
+!data/chroma/.gitkeep
+.pytest_cache/

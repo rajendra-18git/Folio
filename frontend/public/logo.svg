@@ -1,0 +1,17 @@
+<svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Folio Document Sheet -->
+  <path
+    d="M26 8H62L90 36V96C90 104.837 82.8366 112 74 112H26C17.1634 112 10 104.837 10 96V24C10 15.1634 17.1634 8 26 8Z"
+    fill="#2563EB"
+  />
+  <!-- Folded Corner Flap with Rounded Crease -->
+  <path
+    d="M62 8V26C62 31.5228 66.4772 36 72 36H90L62 8Z"
+    fill="#93C5FD"
+  />
+  <!-- Bold Letter F -->
+  <path
+    d="M32 42H72V54H46V63H66V74H46V92H32V42Z"
+    fill="#FFFFFF"
+  />
+</svg>
