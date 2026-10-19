@@ -338,9 +338,16 @@ export const api = {
   async checkHealth(): Promise<boolean> {
     try {
       const rootUrl = getBackendBaseUrl();
-      const res = await fetch(`${rootUrl}/health`, { cache: 'no-store' });
+      console.log('[Folio] Checking backend health at:', `${rootUrl}/health`);
+      const res = await fetch(`${rootUrl}/health`, {
+        method: 'GET',
+        cache: 'no-store',
+        mode: 'cors',
+      });
+      console.log('[Folio] Health check response:', res.status, res.ok);
       return res.ok;
-    } catch {
+    } catch (err) {
+      console.error('[Folio] Health check failed:', err);
       return false;
     }
   },
