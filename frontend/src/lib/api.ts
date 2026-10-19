@@ -329,7 +329,7 @@ export const api = {
   async checkHealth(): Promise<boolean> {
     try {
       const rootUrl = getBackendBaseUrl();
-      const res = await fetch(`${rootUrl}/health`);
+      const res = await fetch(`${rootUrl}/health`, { cache: 'no-store' });
       return res.ok;
     } catch {
       return false;

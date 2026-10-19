@@ -38,10 +38,15 @@ export function FolioShell({
   const { showToast } = useToast();
 
   useEffect(() => {
-    // Check backend health
-    api.checkHealth()
-      .then((healthy) => setIsBackendHealthy(healthy))
-      .catch(() => setIsBackendHealthy(false));
+    // Check backend health with recurring polling
+    const check = () => {
+      api.checkHealth()
+        .then((healthy) => setIsBackendHealthy(healthy))
+        .catch(() => setIsBackendHealthy(false));
+    };
+
+    check();
+    const interval = setInterval(check, 5000);
 
     // Check engine status
     api.getSettingsStatus()
@@ -65,7 +70,10 @@ export function FolioShell({
       }
     };
     window.addEventListener('keydown', handleKeydown);
-    return () => window.removeEventListener('keydown', handleKeydown);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('keydown', handleKeydown);
+    };
   }, []);
 
   const handleToggleNav = () => {
