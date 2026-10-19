@@ -421,6 +421,21 @@ body {
   border-radius: 999px;
   font-size: 13px;
   font-weight: 600;
+  transition: all 0.2s ease;
+}
+.folio-dashboard-wrapper .status.status-offline {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+.folio-dashboard-wrapper .status.status-offline .dot {
+  background: #EF4444;
+}
+.folio-dashboard-wrapper .status.status-connecting {
+  background: #FEF3C7;
+  color: #B45309;
+}
+.folio-dashboard-wrapper .status.status-connecting .dot {
+  background: #F59E0B;
 }
 .folio-dashboard-wrapper .btn-primary {
   height: 44px;

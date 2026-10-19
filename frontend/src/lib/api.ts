@@ -5,21 +5,36 @@ import {
   User, AuthTokenResponse, UserLoginRequest, UserRegisterRequest
 } from './types';
 
-const DEFAULT_API_URL =
-  typeof window !== 'undefined' &&
-  window.location.hostname !== 'localhost' &&
-  window.location.hostname !== '127.0.0.1'
+export function getApiBase(): string {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL.replace(/\/+$/, '');
+  }
+  if (typeof window !== 'undefined') {
+    const isLocal =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+    return isLocal
+      ? 'http://localhost:8000/api'
+      : 'https://folio-v52b.onrender.com/api';
+  }
+  return process.env.NODE_ENV === 'production'
     ? 'https://folio-v52b.onrender.com/api'
     : 'http://localhost:8000/api';
+}
 
-export const API_BASE = (process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL).replace(/\/+$/, '');
+export const API_BASE = {
+  toString: () => getApiBase(),
+  valueOf: () => getApiBase(),
+  replace: (target: string | RegExp, replacement: string) =>
+    getApiBase().replace(target, replacement),
+} as unknown as string;
 
 export function getBackendBaseUrl(): string {
-  return API_BASE.replace(/\/api\/?$/, '');
+  return getApiBase().replace(/\/api\/?$/, '');
 }
 
 export function getDocumentDownloadUrl(documentId: string): string {
-  return `${API_BASE}/documents/${documentId}/download`;
+  return `${getApiBase()}/documents/${documentId}/download`;
 }
 
 export function getStoredToken(): string | null {

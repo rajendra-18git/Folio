@@ -294,7 +294,7 @@ export default function DashboardPage() {
                 </svg>
               </button>
               <h2>Dashboard</h2>
-              <span className="status">
+              <span className={`status ${isBackendHealthy === true ? 'status-connected' : isBackendHealthy === false ? 'status-offline' : 'status-connecting'}`}>
                 <span className="dot"></span>
                 {isBackendHealthy === true ? 'Backend connected' : isBackendHealthy === false ? 'Backend offline' : 'Connecting...'}
               </span>
