@@ -20,14 +20,23 @@ def get_settings_status(db: Session = Depends(get_db)):
     doc_count = db.query(Document).count()
     chunk_count = db.query(DocumentChunk).count()
 
+    if settings.is_postgres():
+        v_store = "Supabase pgvector (Cloud Cosine Distance)"
+        db_type = "Supabase PostgreSQL (Cloud Database)"
+        emb_prov = "Google Gemini text-embedding-004 (768-dim)" if ai_provider.is_configured() else "Dense Semantic Vector Engine (Deterministic 768-dim)"
+    else:
+        v_store = "ChromaDB Persistent Index (Local Vector DB)"
+        db_type = "SQLite Relational Database (Local Persistent)"
+        emb_prov = "Dense Semantic Vector Engine (Multi-Stage)"
+
     return SettingsStatusResponse(
         gemini_configured=ai_provider.is_configured(),
         gemini_model=get_effective_gemini_model(),
-        embedding_provider="Dense Semantic Vector Engine (Multi-Stage)",
-        vector_store="High-Density Persistent Index (Local)",
+        embedding_provider=emb_prov,
+        vector_store=v_store,
         documents_count=doc_count,
         chunks_count=chunk_count,
-        database_type="Relational Metadata Store (Local Persistent)"
+        database_type=db_type
     )
 
 @router.post("/api-key", response_model=GenericMessageResponse)

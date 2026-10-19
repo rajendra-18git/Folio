@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, Float, Text, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
+from pgvector.sqlalchemy import Vector
 from app.core.database import Base
 
 def generate_uuid() -> str:
@@ -57,6 +58,7 @@ class DocumentChunk(Base):
     page_number = Column(Integer, nullable=False)
     content = Column(Text, nullable=False)
     token_count = Column(Integer, default=0)
+    embedding = Column(Vector(768), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     document = relationship("Document", back_populates="chunks")

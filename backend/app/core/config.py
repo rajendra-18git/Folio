@@ -16,6 +16,39 @@ class Settings(BaseSettings):
     CHROMA_DIR: Path = BASE_DIR / "data" / "chroma"
     DATABASE_URL: str = f"sqlite:///{(BASE_DIR / 'data' / 'documind.db').as_posix()}"
     
+    # Supabase Configuration
+    SUPABASE_URL: Optional[str] = None
+    SUPABASE_KEY: Optional[str] = None
+    SUPABASE_DB_URL: Optional[str] = None
+
+    def get_effective_database_url(self) -> str:
+        """
+        Returns normalized database URL.
+        Supports Supabase connection string (pooler or direct) and normalizes
+        postgres:// and postgresql:// to postgresql+psycopg2:// for SQLAlchemy.
+        """
+        raw = os.environ.get("SUPABASE_DB_URL") or self.SUPABASE_DB_URL or os.environ.get("DATABASE_URL") or self.DATABASE_URL
+        if not raw:
+            return f"sqlite:///{(BASE_DIR / 'data' / 'documind.db').as_posix()}"
+        
+        raw_clean = raw.strip()
+        if raw_clean.startswith("postgres://"):
+            return "postgresql+psycopg2://" + raw_clean[len("postgres://"):]
+        elif raw_clean.startswith("postgresql://") and not raw_clean.startswith("postgresql+"):
+            return "postgresql+psycopg2://" + raw_clean[len("postgresql://"):]
+        return raw_clean
+
+    def is_postgres(self) -> bool:
+        """Returns True if the active database is PostgreSQL (e.g. Supabase)."""
+        url = self.get_effective_database_url().lower()
+        return "postgres" in url
+
+    def is_supabase(self) -> bool:
+        """Returns True if database or URL indicates Supabase deployment."""
+        url = self.get_effective_database_url().lower()
+        sb_url = (self.SUPABASE_URL or os.environ.get("SUPABASE_URL", "")).lower()
+        return "supabase" in url or "supabase" in sb_url
+    
     # Gemini Configuration
     GEMINI_API_KEY: Optional[str] = None
     GEMINI_MODEL: str = "gemini-flash-latest"

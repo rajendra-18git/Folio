@@ -92,9 +92,10 @@ async def upload_document(
             )
             db_chunks.append(chunk_obj)
         db.bulk_save_objects(db_chunks)
+        db.commit()
 
-        # Index chunks in ChromaDB vector store
-        vector_store.add_chunks(doc_record.id, chunks_data)
+        # Index chunks in vector store (Supabase pgvector / ChromaDB)
+        vector_store.add_chunks(doc_record.id, chunks_data, db=db)
 
         doc_record.status = "ready"
         if is_scanned:

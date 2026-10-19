@@ -179,4 +179,58 @@ class AIProviderService:
             "error": last_error
         }
 
+    def _generate_fallback_embedding(self, text: str, dim: int = 768) -> List[float]:
+        """Generates a deterministic L2-normalized 768-dim vector for test/demo mode."""
+        import hashlib
+        import math
+        vec = [0.0] * dim
+        words = text.lower().split()
+        if not words:
+            words = ["empty"]
+        for w in words:
+            h = int(hashlib.md5(w.encode("utf-8")).hexdigest(), 16) % dim
+            vec[h] += 1.0
+        norm = math.sqrt(sum(x * x for x in vec)) or 1.0
+        return [float(x / norm) for x in vec]
+
+    def get_embeddings(self, texts: List[str]) -> List[List[float]]:
+        """
+        Generates vector embeddings for a batch of text chunks.
+        Uses Gemini text-embedding-004 if configured, with deterministic fallback.
+        """
+        if not texts:
+            return []
+
+        if self.is_configured():
+            try:
+                client = self.get_client()
+                # Batch embed (batches of 16 to avoid payload limits)
+                results = []
+                batch_size = 16
+                for i in range(0, len(texts), batch_size):
+                    batch = texts[i:i + batch_size]
+                    response = client.models.embed_content(
+                        model="text-embedding-004",
+                        contents=batch
+                    )
+                    if hasattr(response, "embeddings") and response.embeddings:
+                        results.extend([list(e.values) for e in response.embeddings])
+                    elif hasattr(response, "embedding") and response.embedding:
+                        results.append(list(response.embedding.values))
+                    else:
+                        for t in batch:
+                            results.append(self._generate_fallback_embedding(t))
+                if len(results) == len(texts):
+                    return results
+            except Exception as e:
+                print(f"[AIProvider] Live embedding generation fallback: {e}")
+
+        return [self._generate_fallback_embedding(t) for t in texts]
+
+    def get_embedding(self, text: str) -> List[float]:
+        """Generates a vector embedding for a single text query."""
+        res = self.get_embeddings([text])
+        return res[0] if res else self._generate_fallback_embedding(text)
+
 ai_provider = AIProviderService()
+

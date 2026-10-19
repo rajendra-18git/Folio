@@ -64,7 +64,8 @@ class RAGService:
         retrieved_chunks = vector_store.search(
             query=question,
             document_ids=target_doc_ids if target_doc_ids else None,
-            top_k=5
+            top_k=5,
+            db=db
         )
 
         # Build citations list

@@ -194,3 +194,31 @@ def test_auth_workflow():
     unauth_res = client.get("/api/auth/me")
     assert unauth_res.status_code == 401
 
+def test_supabase_configuration_and_embeddings():
+    from app.core.config import Settings
+    from app.services.vector_store import vector_store
+    from app.models.db_models import DocumentChunk
+    
+    # 1. Verify embedding dimension and generation
+    emb = ai_provider.get_embedding("Deep learning and quantum computing.")
+    assert isinstance(emb, list)
+    assert len(emb) == 768
+    
+    # 2. Verify batch embedding generation
+    batch = ai_provider.get_embeddings(["Passage 1", "Passage 2"])
+    assert len(batch) == 2
+    assert len(batch[0]) == 768
+    assert len(batch[1]) == 768
+
+    # 3. Verify DocumentChunk model has pgvector embedding column
+    assert hasattr(DocumentChunk, "embedding")
+
+    # 4. Verify Supabase URL normalization
+    s = Settings(
+        DATABASE_URL="postgres://postgres.abc:mypass@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+    )
+    normalized = s.get_effective_database_url()
+    assert normalized.startswith("postgresql+psycopg2://")
+    assert s.is_postgres() is True
+    assert s.is_supabase() is True
+
