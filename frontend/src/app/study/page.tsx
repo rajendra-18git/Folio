@@ -25,6 +25,7 @@ import { CitationBadge } from '@/components/CitationBadge';
 import { PdfViewerModal } from '@/components/PdfViewerModal';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useToast } from '@/components/Toast';
+import { FolioShell } from '@/components/FolioShell';
 
 const STUDY_TYPES = [
   { id: 'summary', name: 'Executive Summary', icon: BookOpen, desc: 'High-level synthesis and key takeaways' },
@@ -101,7 +102,7 @@ function StudyContent() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-300">
+    <div className="max-w-6xl mx-auto w-full space-y-6 animate-in fade-in duration-300">
       {/* Header */}
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-slate-900">Study Assistant</h2>
@@ -436,8 +437,15 @@ function StudyContent() {
 
 export default function StudyPage() {
   return (
-    <React.Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading study assistant...</div>}>
-      <StudyContent />
-    </React.Suspense>
+    <FolioShell
+      activeRoute="/study"
+      pageTitle="Document Intelligence & Study Assistant"
+    >
+      <main className="content">
+        <React.Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading study assistant...</div>}>
+          <StudyContent />
+        </React.Suspense>
+      </main>
+    </FolioShell>
   );
 }

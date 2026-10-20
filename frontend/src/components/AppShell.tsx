@@ -14,7 +14,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     pathname === '/workspace' ||
     pathname === '/compare' ||
     pathname === '/evaluations' ||
-    pathname === '/settings';
+    pathname === '/settings' ||
+    pathname === '/documents' ||
+    pathname === '/study' ||
+    pathname === '/multimodal';
 
   if (isLandingPage || isAuthPage || isFolioCustomPage) {
     return (

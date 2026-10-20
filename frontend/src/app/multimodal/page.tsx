@@ -21,6 +21,7 @@ import { api } from '@/lib/api';
 import { DocumentItem, MultimodalAnalysisResponse } from '@/lib/types';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useToast } from '@/components/Toast';
+import { FolioShell } from '@/components/FolioShell';
 
 const ANALYSIS_MODES = [
   { id: 'general', name: 'Comprehensive Inspection', icon: Layers, desc: 'Overall visual layout, figures, and text' },
@@ -95,7 +96,7 @@ function MultimodalContent() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-300">
+    <div className="max-w-6xl mx-auto w-full space-y-6 animate-in fade-in duration-300">
       {/* Header */}
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-slate-900">Multimodal Visual Analysis</h2>
@@ -288,8 +289,15 @@ function MultimodalContent() {
 
 export default function MultimodalPage() {
   return (
-    <React.Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading visual tools...</div>}>
-      <MultimodalContent />
-    </React.Suspense>
+    <FolioShell
+      activeRoute="/multimodal"
+      pageTitle="Document Intelligence & Study Assistant"
+    >
+      <main className="content">
+        <React.Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading visual tools...</div>}>
+          <MultimodalContent />
+        </React.Suspense>
+      </main>
+    </FolioShell>
   );
 }

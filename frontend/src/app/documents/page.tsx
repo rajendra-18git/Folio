@@ -20,6 +20,7 @@ import {
 import { api } from '@/lib/api';
 import { DocumentItem } from '@/lib/types';
 import { useToast } from '@/components/Toast';
+import { FolioShell } from '@/components/FolioShell';
 
 export default function DocumentsPage() {
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
@@ -111,9 +112,15 @@ export default function DocumentsPage() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-300">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <FolioShell
+      activeRoute="/documents"
+      pageTitle="Document Intelligence & Study Assistant"
+      onDocumentUploaded={fetchDocs}
+    >
+      <main className="content">
+        <div className="max-w-6xl mx-auto w-full space-y-6 animate-in fade-in duration-300">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">Document Library</h2>
           <p className="text-sm text-slate-500">
@@ -331,6 +338,8 @@ export default function DocumentsPage() {
           </div>
         </div>
       )}
-    </div>
+        </div>
+      </main>
+    </FolioShell>
   );
 }
