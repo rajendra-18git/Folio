@@ -13,7 +13,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     pathname === '/dashboard' ||
     pathname === '/workspace' ||
     pathname === '/compare' ||
-    pathname === '/evaluations';
+    pathname === '/evaluations' ||
+    pathname === '/settings';
 
   if (isLandingPage || isAuthPage || isFolioCustomPage) {
     return (

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings – Folio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a2a66; --blue:#1d4ed8; --blue-2:#2563eb; --sky:#dbeafe; --ice:#f1f6ff;
+  --line:#d8e4f8; --text:#10244a; --muted:#5a6f94; --ok:#0e7c66; --ok-bg:#e3f6f1; --warn-bg:#fff7e0; --warn:#8a6100;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Plus Jakarta Sans","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;letter-spacing:-.005em;background:var(--ice);color:var(--text);font-size:14px;min-height:100vh;display:flex}
+a{color:inherit;text-decoration:none}
+
+/* Sidebar */
+.sidebar{width:248px;background:#fff;border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 22px}
+.logo{width:38px;height:38px;border-radius:10px;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px}
+.brand b{display:block;font-size:17px;color:var(--navy)}
+.brand small{color:var(--muted);font-size:12px}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:var(--muted);font-weight:500;margin-bottom:3px}
+.nav a:hover{background:var(--ice);color:var(--blue)}
+.nav a.active{background:var(--blue);color:#fff;font-weight:600}
+.nav svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* Main */
+.content{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 28px}
+.topbar h2{font-size:16px;color:var(--navy)}
+.status{display:inline-flex;align-items:center;gap:7px;background:var(--ok-bg);color:var(--ok);border-radius:99px;padding:5px 12px;font-size:12px;font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.spacer{flex:1}
+.btn{height:42px;padding:0 22px;border:0;border-radius:10px;background:var(--blue);color:#fff;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap}
+.btn:hover{background:#1e40af}
+.btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.btn.ghost:hover{background:var(--sky)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--blue-2);outline-offset:2px}
+.user{display:flex;align-items:center;gap:8px;background:var(--ice);padding:4px 14px 4px 4px;border-radius:99px;font-weight:500}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}
+
+main{padding:36px 28px 64px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;font-weight:800;letter-spacing:-.025em;color:var(--navy)}
+.sub{color:var(--muted);margin:6px 0 26px}
+
+/* Banner */
+.banner{display:flex;align-items:center;gap:14px;background:var(--navy);color:#fff;border-radius:14px;padding:18px 22px;margin-bottom:24px}
+.banner .pulse{width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 5px rgba(74,222,128,.25);flex-shrink:0}
+.banner strong{display:block;font-size:15px}
+.banner span{color:#bcd0f5;font-size:13px}
+
+/* Cards */
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:22px}
+.card-head{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.icon-box{width:44px;height:44px;border-radius:12px;background:var(--sky);color:var(--blue);display:grid;place-items:center;flex-shrink:0}
+.icon-box svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card-head h3{font-size:17px;color:var(--navy)}
+.card-head p{color:var(--muted);font-size:13px;margin-top:2px}
+.badge{margin-left:auto;display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:6px 14px;font-weight:600;font-size:12px;white-space:nowrap;background:var(--warn-bg);color:var(--warn)}
+.badge.on{background:var(--ok-bg);color:var(--ok)}
+label{display:block;font-weight:600;font-size:13px;margin-bottom:8px;color:var(--navy)}
+select,input{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;padding:0 14px;font:inherit;color:var(--text);background:#fff}
+.hint{font-size:12px;color:var(--muted);margin-top:8px}
+.field{margin-bottom:22px}
+.note{background:var(--ice);border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:10px;padding:16px 18px;margin-bottom:22px}
+.note h4{font-size:14px;color:var(--navy);margin-bottom:6px}
+.note p{color:var(--muted);line-height:1.55;font-size:13px}
+.key-row{display:flex;gap:10px}
+.msg{font-size:13px;margin-top:10px;min-height:18px;font-weight:600}
+.msg.ok{color:var(--ok)} .msg.err{color:#b42318}
+
+/* Stack tiles */
+.stack{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--ice)}
+.tile .k{color:var(--blue);font-size:12px;font-weight:600;margin-bottom:8px}
+.tile strong{display:block;color:var(--navy);font-size:15px;margin-bottom:4px}
+.tile span{color:var(--muted);font-size:12px}
+
+@media(max-width:860px){
+  body{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;flex-direction:column;padding:12px}
+  .brand{padding-bottom:10px}
+  .nav{display:flex;overflow-x:auto;gap:6px}
+  .nav a{white-space:nowrap;margin:0}
+  .stack{grid-template-columns:1fr}
+  .key-row{flex-direction:column}
+  .card-head{flex-wrap:wrap}.badge{margin-left:0}
+  .topbar{padding:0 14px}.topbar h2,.user span{display:none}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand"><div class="logo">F</div><div><b>Folio</b><small>Document intelligence</small></div></div>
+  <nav class="nav">
+    <a href="/dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a>
+    <a href="/documents"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Documents</a>
+    <a href="/workspace"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI Workspace</a>
+    <a href="/study"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>Study Assistant</a>
+    <a href="/compare"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v3a3 3 0 0 0 3 3h6"/></svg>Doc Comparison</a>
+    <a href="/multimodal"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>Visual Analysis</a>
+    <a href="/evaluations"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>Evaluations</a>
+    <a href="/settings" class="active" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</a>
+  </nav>
+</aside>
+
+<div class="content">
+  <header class="topbar">
+    <h2>Document Intelligence &amp; Study Assistant</h2>
+    <span class="status" id="backendStatus"><span class="dot"></span>Backend connected</span>
+    <div class="spacer"></div>
+    <input type="file" id="pdfFileInput" accept="application/pdf" style="display:none">
+    <button class="btn ghost" type="button" id="uploadPdfBtn">Upload PDF</button>
+    <div class="user"><div class="avatar" id="userAvatar">R</div><span id="userName">rajendra</span></div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <h1>Settings</h1>
+      <p class="sub">Manage your AI engine, API key, and storage.</p>
+
+      <div class="banner">
+        <span class="pulse"></span>
+        <div><strong>Retrieval engine active</strong><span id="bannerText">Add your Gemini API key below to turn on full AI answers.</span></div>
+      </div>
+
+      <section class="card">
+        <div class="card-head">
+          <div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 9.2-9.2M16 7l3 3M14 9l2 2"/></svg></div>
+          <div><h3>AI engine</h3><p>Powers cited answers, study material, and document comparison.</p></div>
+          <span class="badge" id="badge"><span class="dot"></span><span id="badgeText">Key needed</span></span>
+        </div>
+
+        <div class="field">
+          <label for="tier">Intelligence tier</label>
+          <select id="tier">
+            <option value="gemini-flash-latest">Universal Intelligence Engine (recommended)</option>
+            <option value="gemini-3.8-flash">High-Speed Reasoning Engine (gemini-3.8-flash)</option>
+            <option value="gemini-3.7-flash">Deep Analytical Engine (gemini-3.7-flash)</option>
+            <option value="gemini-pro-latest">Enterprise Research Engine (gemini-pro-latest)</option>
+          </select>
+          <p class="hint">Requests are routed automatically to the fastest available endpoint.</p>
+        </div>
+
+        <div class="note">
+          <h4>Your data stays private</h4>
+          <p>API keys are encrypted and stored only on your backend. Documents and text vectors are processed in an isolated local index and are never shared or used to train models.</p>
+        </div>
+
+        <div class="field" style="margin-bottom:0">
+          <label for="key">Gemini API key</label>
+          <div class="key-row">
+            <input id="key" type="password" placeholder="Paste your API key" autocomplete="off">
+            <button class="btn ghost" type="button" id="toggle">Show</button>
+            <button class="btn" type="button" id="save">Save key</button>
+          </div>
+          <p class="msg" id="msg" role="status"></p>
+          <p class="hint">Keys are checked as soon as you save.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head" style="border:0;margin:0;padding-bottom:18px">
+          <div><h3>Storage &amp; engine stack</h3></div>
+        </div>
+        <div class="stack">
+          <div class="tile"><div class="k">Relational storage</div><strong id="tileRelational">Persistent relational store</strong><span id="tileRelationalSub">Document metadata and conversations</span></div>
+          <div class="tile"><div class="k">Vector storage</div><strong id="tileVector">High-density vector index</strong><span id="tileVectorSub">0 indexed passages</span></div>
+          <div class="tile"><div class="k">Embeddings</div><strong id="tileEmbeddings">1,536-D semantic embeddings</strong><span id="tileEmbeddingsSub">Cosine similarity space</span></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:8000/api'
+  : 'https://folio-1-63by.onrender.com/api';
+
+const key = document.getElementById('key'),
+      msg = document.getElementById('msg'),
+      badge = document.getElementById('badge'),
+      badgeText = document.getElementById('badgeText'),
+      banner = document.getElementById('bannerText'),
+      tierSelect = document.getElementById('tier'),
+      backendStatus = document.getElementById('backendStatus'),
+      tileRelationalSub = document.getElementById('tileRelationalSub'),
+      tileVectorSub = document.getElementById('tileVectorSub'),
+      tileEmbeddingsSub = document.getElementById('tileEmbeddingsSub');
+
+document.getElementById('toggle').onclick = function() {
+  const show = key.type === 'password';
+  key.type = show ? 'text' : 'password';
+  this.textContent = show ? 'Hide' : 'Show';
+};
+
+async function loadStatus() {
+  try {
+    const res = await fetch(`${API_BASE}/settings/status`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.gemini_configured) {
+        badge.classList.add('on');
+        badgeText.textContent = 'AI engine connected';
+        banner.textContent = 'Full AI answers and study tools are active.';
+        key.placeholder = '••••••••••••••••••••••••••••••••••••';
+      } else {
+        badge.classList.remove('on');
+        badgeText.textContent = 'Key needed';
+        banner.textContent = 'Add your Gemini API key below to turn on full AI answers.';
+      }
+      if (data.gemini_model && tierSelect) {
+        tierSelect.value = data.gemini_model;
+      }
+      if (data.chunks_count !== undefined) {
+        tileVectorSub.textContent = `${data.chunks_count} indexed passages`;
+      }
+      if (data.database_type) {
+        tileRelationalSub.textContent = data.database_type;
+      }
+      if (data.embedding_provider) {
+        tileEmbeddingsSub.textContent = data.embedding_provider;
+      }
+    }
+  } catch(err) {
+    console.error('Failed to load status', err);
+  }
+}
+
+document.getElementById('save').onclick = async function() {
+  const v = key.value.trim();
+  if(!v) {
+    msg.className = 'msg err';
+    msg.textContent = 'Enter an API key to save.';
+    return;
+  }
+  msg.className = 'msg';
+  msg.textContent = 'Validating key...';
+
+  try {
+    const res = await fetch(`${API_BASE}/settings/api-key`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ api_key: v })
+    });
+    const result = await res.json();
+    if (result.success) {
+      msg.className = 'msg ok';
+      msg.textContent = 'Key saved.';
+      badge.classList.add('on');
+      badgeText.textContent = 'AI engine connected';
+      banner.textContent = 'Full AI answers are on.';
+      key.value = '';
+      loadStatus();
+    } else {
+      msg.className = 'msg err';
+      msg.textContent = result.message || 'Invalid API key.';
+    }
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = 'Error connecting to backend.';
+  }
+};
+
+if (tierSelect) {
+  tierSelect.onchange = async function() {
+    try {
+      await fetch(`${API_BASE}/settings/model`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: this.value })
+      });
+    } catch(e) {}
+  };
+}
+
+const uploadBtn = document.getElementById('uploadPdfBtn');
+const fileInput = document.getElementById('pdfFileInput');
+if (uploadBtn && fileInput) {
+  uploadBtn.onclick = () => fileInput.click();
+  fileInput.onchange = async function() {
+    if (!this.files || !this.files[0]) return;
+    const file = this.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    uploadBtn.textContent = 'Uploading...';
+    try {
+      const res = await fetch(`${API_BASE}/documents/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      if (res.ok) {
+        uploadBtn.textContent = 'Uploaded!';
+        setTimeout(() => { uploadBtn.textContent = 'Upload PDF'; }, 2000);
+        loadStatus();
+      } else {
+        uploadBtn.textContent = 'Upload Failed';
+      }
+    } catch(e) {
+      uploadBtn.textContent = 'Upload Failed';
+    }
+  };
+}
+
+loadStatus();
+</script>
+</body>
+</html>
