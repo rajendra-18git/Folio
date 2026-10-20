@@ -147,7 +147,7 @@ export default function SettingsPage() {
           --err-bg: #fee4e2;
         }
         .folio-settings-container {
-          font-family: "Plus Jakarta Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           letter-spacing: -0.005em;
           background: var(--ice);
           color: var(--text);
@@ -158,6 +158,21 @@ export default function SettingsPage() {
         }
         .folio-settings-container * {
           box-sizing: border-box;
+        }
+        .folio-settings-container h1,
+        .folio-settings-container h2,
+        .folio-settings-container h3,
+        .folio-settings-container h4,
+        .folio-settings-container .brand b,
+        .folio-settings-container .banner strong,
+        .folio-settings-container .tile strong {
+          font-family: 'Sora', sans-serif;
+          letter-spacing: -0.02em;
+        }
+        .folio-settings-container button,
+        .folio-settings-container input,
+        .folio-settings-container select {
+          font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .folio-settings-container a {
           color: inherit;
