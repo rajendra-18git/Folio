@@ -53,23 +53,23 @@
 }
 
 [data-theme="dark"], .dark {
-  /* "Frozen Lake" Cyber-Glacier Dark Palette */
-  --background: #040914;
-  --foreground: #FFFAFA;
-  --color-secondary-bg: #0B1936;
-  --color-text-primary: #FFFAFA;
-  --color-text-secondary: #8BA8C8;
-  --color-text-muted: #6D8196;
-  --color-slate-gray: #6D8196;
-  --color-icy-blue: #ADD8E6;
-  --color-glacier-cyan: #60D5FA;
-  --color-deep-navy: #001538;
+  /* Dark mode disabled - using light palette */
+  --background: #F4F8FC;
+  --foreground: #091428;
+  --color-secondary-bg: #FFFFFF;
+  --color-text-primary: #091428;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748B;
+  --color-slate-gray: #475569;
+  --color-icy-blue: #0284C7;
+  --color-glacier-cyan: #0284C7;
+  --color-deep-navy: #F0F6FC;
   --color-electric-ice: #0284C7;
-  --color-border: rgba(173, 216, 230, 0.12);
-  --color-card-bg: rgba(11, 25, 54, 0.68);
-  --color-card-border: rgba(173, 216, 230, 0.16);
-  --color-glass-shadow: rgba(0, 0, 0, 0.65);
-  --prism-glow-opacity: 0.35;
+  --color-border: rgba(2, 132, 199, 0.16);
+  --color-card-bg: rgba(255, 255, 255, 0.88);
+  --color-card-border: rgba(14, 165, 233, 0.22);
+  --color-glass-shadow: rgba(15, 23, 42, 0.08);
+  --prism-glow-opacity: 0.16;
 }
 
 @theme inline {

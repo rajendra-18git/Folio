@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { DocuMindLogo } from '@/components/DocuMindLogo';
-import { Menu, X, ArrowRight, Sun, Moon, LogOut, User as UserIcon } from 'lucide-react';
+import { Menu, X, ArrowRight, LogOut, User as UserIcon } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/context/AuthContext';
 import gsap from 'gsap';
@@ -81,25 +81,8 @@ export function LandingNav() {
           ))}
         </nav>
 
-        {/* Right: Conversion CTAs & Theme Toggle */}
+        {/* Right: Conversion CTAs */}
         <div className="hidden md:flex items-center gap-4 font-sans">
-          {/* Theme Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            className={`p-2.5 rounded-full transition-all duration-200 border cursor-pointer ${
-              isLight
-                ? 'bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200 shadow-sm'
-                : 'bg-[#0B1936] hover:bg-[#122854] text-[#60D5FA] border-[#ADD8E6]/20 shadow-md'
-            }`}
-            title={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-            aria-label="Toggle Light and Dark Mode"
-          >
-            {isLight ? (
-              <Moon className="w-4 h-4 transition-transform hover:rotate-12" />
-            ) : (
-              <Sun className="w-4 h-4 transition-transform hover:rotate-45" />
-            )}
-          </button>
 
           {isAuthenticated && user ? (
             <div className="flex items-center gap-3">
@@ -151,17 +134,6 @@ export function LandingNav() {
 
         {/* Mobile Hamburger Toggle */}
         <div className="md:hidden flex items-center gap-2">
-          <button
-            onClick={toggleTheme}
-            className={`p-2 rounded-xl transition border cursor-pointer ${
-              isLight
-                ? 'bg-sky-50 text-sky-800 border-sky-200'
-                : 'bg-[#0B1936] text-[#60D5FA] border-[#ADD8E6]/20'
-            }`}
-            aria-label="Toggle theme"
-          >
-            {isLight ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-          </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`p-2 rounded-xl transition ${

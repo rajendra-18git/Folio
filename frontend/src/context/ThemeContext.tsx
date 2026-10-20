@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type Theme = 'light' | 'dark';
+export type Theme = 'light';
 
 interface ThemeContextType {
   theme: Theme;
@@ -17,44 +17,27 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
+  const [theme] = useState<Theme>('light');
 
   useEffect(() => {
-    // Check saved theme or default to light mode
-    const saved = localStorage.getItem('documind-theme') as Theme | null;
-    const initialTheme: Theme = saved === 'dark' ? 'dark' : 'light';
-    setThemeState(initialTheme);
-    applyTheme(initialTheme);
-    setMounted(true);
-  }, []);
-
-  const applyTheme = (t: Theme) => {
     if (typeof document === 'undefined') return;
-    const root = document.documentElement;
-    root.setAttribute('data-theme', t);
-    if (t === 'light') {
-      root.classList.remove('dark');
-      root.classList.add('light');
-    } else {
-      root.classList.remove('light');
-      root.classList.add('dark');
+    try {
+      localStorage.removeItem('documind-theme');
+      localStorage.setItem('documind-theme', 'light');
+    } catch {
+      // ignore
     }
 
-    // Broadcast event for WebGL canvases (PersistentCanvas3D and VectorGalaxy3D)
-    window.dispatchEvent(new CustomEvent('documind:theme', { detail: { theme: t } }));
-  };
+    const root = document.documentElement;
+    root.setAttribute('data-theme', 'light');
+    root.classList.remove('dark');
+    root.classList.add('light');
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem('documind-theme', newTheme);
-    applyTheme(newTheme);
-  };
+    window.dispatchEvent(new CustomEvent('documind:theme', { detail: { theme: 'light' } }));
+  }, []);
 
-  const toggleTheme = () => {
-    const next = theme === 'light' ? 'dark' : 'light';
-    setTheme(next);
-  };
+  const setTheme = () => {};
+  const toggleTheme = () => {};
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
