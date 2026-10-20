@@ -76,11 +76,11 @@ select,input{width:100%;height:44px;border:1px solid var(--line);border-radius:1
 .msg.ok{color:var(--ok)} .msg.err{color:#b42318}
 
 /* Stack tiles */
-.stack{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.tile{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--ice)}
-.tile .k{color:var(--blue);font-size:12px;font-weight:600;margin-bottom:8px}
-.tile strong{display:block;color:var(--navy);font-size:15px;margin-bottom:4px}
-.tile span{color:var(--muted);font-size:12px}
+.stack{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%}
+.stack-tile{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:var(--ice);display:flex;flex-direction:column;align-items:flex-start;gap:4px;box-sizing:border-box}
+.stack-tile .k{color:var(--blue);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
+.stack-tile strong{display:block;color:var(--navy);font-size:15px;margin-bottom:2px;font-family:'Sora',sans-serif;font-weight:700;line-height:1.3}
+.stack-tile span{color:var(--muted);font-size:12px;line-height:1.45;word-break:break-word}
 
 @media(max-width:860px){
   body{flex-direction:column}
@@ -171,9 +171,9 @@ select,input{width:100%;height:44px;border:1px solid var(--line);border-radius:1
           <div><h3>Storage &amp; engine stack</h3></div>
         </div>
         <div class="stack">
-          <div class="tile"><div class="k">Relational storage</div><strong id="tileRelational">Persistent relational store</strong><span id="tileRelationalSub">Document metadata and conversations</span></div>
-          <div class="tile"><div class="k">Vector storage</div><strong id="tileVector">High-density vector index</strong><span id="tileVectorSub">0 indexed passages</span></div>
-          <div class="tile"><div class="k">Embeddings</div><strong id="tileEmbeddings">1,536-D semantic embeddings</strong><span id="tileEmbeddingsSub">Cosine similarity space</span></div>
+          <div class="stack-tile"><div class="k">Relational storage</div><strong id="tileRelational">Persistent relational store</strong><span id="tileRelationalSub">Document metadata and conversations</span></div>
+          <div class="stack-tile"><div class="k">Vector storage</div><strong id="tileVector">High-density vector index</strong><span id="tileVectorSub">0 indexed passages</span></div>
+          <div class="stack-tile"><div class="k">Embeddings</div><strong id="tileEmbeddings">1,536-D semantic embeddings</strong><span id="tileEmbeddingsSub">Cosine similarity space</span></div>
         </div>
       </section>
     </div>

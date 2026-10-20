@@ -313,30 +313,45 @@ export default function SettingsPage() {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 16px;
+            width: 100%;
           }
-          .tile {
+          .stack-tile {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 110px;
             border: 1px solid #e3e8f3;
             border-radius: 12px;
-            padding: 16px;
+            padding: 18px 20px;
             background: #f4f7fc;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            gap: 4px;
+            box-sizing: border-box;
           }
-          .tile .k {
+          .stack-tile .k {
             color: #1d4ed8;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
           }
-          .tile strong {
+          .stack-tile strong {
             display: block;
             color: #0e1530;
             font-size: 15px;
-            margin-bottom: 4px;
             font-weight: 700;
             font-family: 'Sora', sans-serif;
+            line-height: 1.3;
+            margin-bottom: 2px;
           }
-          .tile span {
+          .stack-tile span {
             color: #5b6478;
             font-size: 12px;
+            line-height: 1.45;
+            word-break: break-word;
           }
 
           @media (max-width: 860px) {
@@ -462,17 +477,17 @@ export default function SettingsPage() {
               </div>
             </div>
             <div className="stack">
-              <div className="tile">
+              <div className="stack-tile">
                 <div className="k">Relational storage</div>
                 <strong>Persistent relational store</strong>
                 <span>{status?.database_type || 'Document metadata and conversations'}</span>
               </div>
-              <div className="tile">
+              <div className="stack-tile">
                 <div className="k">Vector storage</div>
                 <strong>High-density vector index</strong>
                 <span>{status?.chunks_count ?? 0} indexed passages</span>
               </div>
-              <div className="tile">
+              <div className="stack-tile">
                 <div className="k">Embeddings</div>
                 <strong>1,536-D semantic embeddings</strong>
                 <span>{status?.embedding_provider || 'Cosine similarity space'}</span>
