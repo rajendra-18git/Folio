@@ -44,19 +44,28 @@ def init_db():
 
     Base.metadata.create_all(bind=engine)
     
-    with engine.connect() as conn:
+    def safe_execute(sql: str):
         try:
-            conn.execute(text("ALTER TABLE messages ADD COLUMN tokens_used INTEGER DEFAULT 0"))
-            conn.commit()
+            with engine.begin() as conn:
+                conn.execute(text(sql))
         except Exception:
             pass
-        try:
-            conn.execute(text("ALTER TABLE users ADD COLUMN is_verified BOOLEAN DEFAULT 0"))
-            conn.commit()
-        except Exception:
-            pass
-        try:
-            conn.execute(text("ALTER TABLE document_chunks ADD COLUMN embedding VECTOR(768)"))
-            conn.commit()
-        except Exception:
-            pass
+
+    if settings.is_postgres():
+        safe_execute("ALTER TABLE messages ADD COLUMN IF NOT EXISTS tokens_used INTEGER DEFAULT 0")
+        safe_execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE")
+        safe_execute("ALTER TABLE document_chunks ADD COLUMN IF NOT EXISTS embedding VECTOR(768)")
+        safe_execute("ALTER TABLE documents ADD COLUMN IF NOT EXISTS user_id VARCHAR(36)")
+        safe_execute("ALTER TABLE conversations ADD COLUMN IF NOT EXISTS user_id VARCHAR(36)")
+        safe_execute("ALTER TABLE study_generations ADD COLUMN IF NOT EXISTS user_id VARCHAR(36)")
+        safe_execute("ALTER TABLE document_comparisons ADD COLUMN IF NOT EXISTS user_id VARCHAR(36)")
+        safe_execute("CREATE INDEX IF NOT EXISTS idx_documents_user_id ON documents (user_id)")
+        safe_execute("CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id)")
+    else:
+        safe_execute("ALTER TABLE messages ADD COLUMN tokens_used INTEGER DEFAULT 0")
+        safe_execute("ALTER TABLE users ADD COLUMN is_verified BOOLEAN DEFAULT 0")
+        safe_execute("ALTER TABLE document_chunks ADD COLUMN embedding VECTOR(768)")
+        safe_execute("ALTER TABLE documents ADD COLUMN user_id VARCHAR(36)")
+        safe_execute("ALTER TABLE conversations ADD COLUMN user_id VARCHAR(36)")
+        safe_execute("ALTER TABLE study_generations ADD COLUMN user_id VARCHAR(36)")
+        safe_execute("ALTER TABLE document_comparisons ADD COLUMN user_id VARCHAR(36)")

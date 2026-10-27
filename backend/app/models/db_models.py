@@ -16,7 +16,7 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(255), nullable=True)
     is_active = Column(Boolean, default=True)
-    is_verified = Column(Boolean, default=False)
+    is_verified = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class EmailVerificationOTP(Base):
@@ -34,6 +34,7 @@ class Document(Base):
     __tablename__ = "documents"
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
     filename = Column(String(255), nullable=False)
     original_filename = Column(String(255), nullable=False)
     file_path = Column(String(512), nullable=False)
@@ -46,6 +47,7 @@ class Document(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    user = relationship("User", backref="documents")
     chunks = relationship("DocumentChunk", back_populates="document", cascade="all, delete-orphan")
     study_generations = relationship("StudyGeneration", back_populates="document", cascade="all, delete-orphan")
 
@@ -67,10 +69,12 @@ class Conversation(Base):
     __tablename__ = "conversations"
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
     title = Column(String(255), nullable=False, default="New Conversation")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    user = relationship("User", backref="conversations")
     messages = relationship("Message", back_populates="conversation", cascade="all, delete-orphan", order_by="Message.created_at")
 
 class Message(Base):
@@ -92,6 +96,7 @@ class StudyGeneration(Base):
     __tablename__ = "study_generations"
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
     document_id = Column(String(36), ForeignKey("documents.id", ondelete="CASCADE"), nullable=False)
     study_type = Column(String(50), nullable=False)  # summary, two_mark, five_mark, ten_mark, flashcards, mcqs, practice_test
     topic = Column(String(255), nullable=True)
@@ -104,6 +109,7 @@ class DocumentComparison(Base):
     __tablename__ = "document_comparisons"
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
     document_ids = Column(Text, nullable=False)  # JSON string list of doc IDs
     document_titles = Column(Text, nullable=False)  # JSON string list of doc titles
     topic_focus = Column(String(255), nullable=True)

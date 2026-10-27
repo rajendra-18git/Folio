@@ -12,7 +12,8 @@ class RAGService:
         db: Session,
         question: str,
         document_ids: List[str],
-        conversation_id: str = None
+        conversation_id: str = None,
+        user_id: str = None
     ) -> Tuple[Message, Conversation]:
         """
         Executes grounded RAG pipeline:
@@ -21,16 +22,19 @@ class RAGService:
         3. Call Gemini (or fallback mode).
         4. Extract citations and save conversation history.
         """
-        # Validate or create conversation
+        # Validate or create conversation linked to user
         if conversation_id:
-            conv = db.query(Conversation).filter(Conversation.id == conversation_id).first()
+            conv_query = db.query(Conversation).filter(Conversation.id == conversation_id)
+            if user_id:
+                conv_query = conv_query.filter((Conversation.user_id == user_id) | (Conversation.user_id.is_(None)))
+            conv = conv_query.first()
             if not conv:
-                conv = Conversation(title=question[:40] + ("..." if len(question) > 40 else ""))
+                conv = Conversation(user_id=user_id, title=question[:40] + ("..." if len(question) > 40 else ""))
                 db.add(conv)
                 db.commit()
                 db.refresh(conv)
         else:
-            conv = Conversation(title=question[:40] + ("..." if len(question) > 40 else ""))
+            conv = Conversation(user_id=user_id, title=question[:40] + ("..." if len(question) > 40 else ""))
             db.add(conv)
             db.commit()
             db.refresh(conv)
@@ -46,26 +50,33 @@ class RAGService:
         db.add(user_msg)
         db.commit()
 
-        # Load document metadata for names
+        # Load document metadata for names scoped to user
         docs_map = {}
         target_doc_ids = list(document_ids) if document_ids else []
         if target_doc_ids:
-            docs = db.query(Document).filter(Document.id.in_(target_doc_ids)).all()
+            query = db.query(Document).filter(Document.id.in_(target_doc_ids))
+            if user_id:
+                query = query.filter((Document.user_id == user_id) | (Document.user_id.is_(None)))
+            docs = query.all()
             for d in docs:
                 docs_map[d.id] = d.original_filename
         else:
-            # Query all ready documents if none explicitly chosen
-            docs = db.query(Document).filter(Document.status == "ready").all()
+            # Query ready documents for this specific user
+            query = db.query(Document).filter(Document.status == "ready")
+            if user_id:
+                query = query.filter((Document.user_id == user_id) | (Document.user_id.is_(None)))
+            docs = query.all()
             for d in docs:
                 docs_map[d.id] = d.original_filename
                 target_doc_ids.append(d.id)
 
-        # Retrieve relevant passages
+        # Retrieve relevant passages from user-isolated vector store
         retrieved_chunks = vector_store.search(
             query=question,
             document_ids=target_doc_ids if target_doc_ids else None,
             top_k=5,
-            db=db
+            db=db,
+            user_id=user_id
         )
 
         # Build citations list

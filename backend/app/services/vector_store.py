@@ -10,19 +10,19 @@ from app.services.ai_provider import ai_provider
 class VectorStoreService:
     def __init__(self):
         self._chroma_client = None
-        self._chroma_collection = None
 
-    def _get_chroma_collection(self):
-        if self._chroma_collection is None:
+    def _get_chroma_collection(self, user_id: Optional[str] = None):
+        if self._chroma_client is None:
             self._chroma_client = chromadb.PersistentClient(
                 path=str(settings.CHROMA_DIR),
                 settings=ChromaSettings(anonymized_telemetry=False)
             )
-            self._chroma_collection = self._chroma_client.get_or_create_collection(
-                name=settings.CHROMA_COLLECTION_NAME,
-                metadata={"hnsw:space": "cosine"}
-            )
-        return self._chroma_collection
+        # Dedicated per-user isolated vector database collection
+        col_name = f"user_{user_id.replace('-', '_')}_chunks" if user_id else settings.CHROMA_COLLECTION_NAME
+        return self._chroma_client.get_or_create_collection(
+            name=col_name,
+            metadata={"hnsw:space": "cosine"}
+        )
 
     def is_pgvector(self) -> bool:
         """Returns True if the backend is configured to use Supabase / PostgreSQL pgvector."""
@@ -32,11 +32,12 @@ class VectorStoreService:
         self,
         document_id: str,
         chunks: List[Dict[str, Any]],
-        db: Optional[Session] = None
+        db: Optional[Session] = None,
+        user_id: Optional[str] = None
     ) -> int:
         """
         Adds chunk texts with metadata to the vector store.
-        Uses Supabase pgvector if connected to PostgreSQL; otherwise uses ChromaDB.
+        Uses Supabase pgvector if connected to PostgreSQL; otherwise uses per-user ChromaDB collection.
         """
         if not chunks:
             return 0
@@ -71,13 +72,14 @@ class VectorStoreService:
                 if close_session:
                     session.close()
 
-        # --- Local ChromaDB fallback flow ---
-        collection = self._get_chroma_collection()
+        # --- Local ChromaDB fallback flow (per-user collection) ---
+        collection = self._get_chroma_collection(user_id=user_id)
         ids = [f"{document_id}_chunk_{c['chunk_index']}" for c in chunks]
         texts = [c["content"] for c in chunks]
         metadatas = [
             {
                 "document_id": document_id,
+                "user_id": user_id or "default",
                 "page_number": int(c["page_number"]),
                 "chunk_index": int(c["chunk_index"])
             }
@@ -96,11 +98,12 @@ class VectorStoreService:
         query: str,
         document_ids: Optional[List[str]] = None,
         top_k: int = 5,
-        db: Optional[Session] = None
+        db: Optional[Session] = None,
+        user_id: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         """
-        Retrieves top_k similar chunks.
-        Queries Supabase pgvector via cosine distance if on PostgreSQL, or ChromaDB if on SQLite.
+        Retrieves top_k similar chunks for the specific user and documents.
+        Queries Supabase pgvector via cosine distance if on PostgreSQL, or per-user ChromaDB if on SQLite.
         """
         if not query.strip():
             return []
@@ -114,12 +117,16 @@ class VectorStoreService:
                 close_session = True
 
             try:
+                from app.models.db_models import Document
                 query_emb = ai_provider.get_embedding(query)
                 dist_expr = DocumentChunk.embedding.cosine_distance(query_emb).label("distance")
                 
-                stmt = session.query(DocumentChunk, dist_expr).filter(
+                stmt = session.query(DocumentChunk, dist_expr).join(Document, DocumentChunk.document_id == Document.id).filter(
                     DocumentChunk.embedding.isnot(None)
                 )
+
+                if user_id:
+                    stmt = stmt.filter(Document.user_id == user_id)
 
                 if document_ids:
                     stmt = stmt.filter(DocumentChunk.document_id.in_(document_ids))
@@ -146,8 +153,8 @@ class VectorStoreService:
                 if close_session:
                     session.close()
 
-        # --- Local ChromaDB search ---
-        collection = self._get_chroma_collection()
+        # --- Local ChromaDB search (dedicated per-user collection) ---
+        collection = self._get_chroma_collection(user_id=user_id)
         where_clause = None
         if document_ids:
             if len(document_ids) == 1:
@@ -186,9 +193,9 @@ class VectorStoreService:
 
         return retrieved
 
-    def delete_document_chunks(self, document_id: str, db: Optional[Session] = None) -> None:
+    def delete_document_chunks(self, document_id: str, db: Optional[Session] = None, user_id: Optional[str] = None) -> None:
         """
-        Deletes all chunks belonging to a document.
+        Deletes all chunks belonging to a document from the user's vector store.
         """
         if self.is_pgvector():
             close_session = False
@@ -207,7 +214,7 @@ class VectorStoreService:
             return
 
         try:
-            collection = self._get_chroma_collection()
+            collection = self._get_chroma_collection(user_id=user_id)
             collection.delete(where={"document_id": document_id})
         except Exception:
             pass

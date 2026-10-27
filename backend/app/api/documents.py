@@ -1,13 +1,14 @@
 import os
 import shutil
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Response
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.core.database import get_db
-from app.models.db_models import Document, DocumentChunk
+from app.core.auth import get_optional_current_user
+from app.models.db_models import Document, DocumentChunk, User
 from app.schemas.api_schemas import (
     DocumentResponse, DocumentDetailResponse, GenericMessageResponse
 )
@@ -19,6 +20,7 @@ router = APIRouter(prefix="/documents", tags=["Documents"])
 @router.post("/upload", response_model=DocumentResponse)
 async def upload_document(
     file: UploadFile = File(...),
+    current_user: Optional[User] = Depends(get_optional_current_user),
     db: Session = Depends(get_db)
 ):
     # 1. Validate file extension and MIME type
@@ -42,9 +44,12 @@ async def upload_document(
             detail="Invalid file format: File header is not a valid PDF document."
         )
 
-    # 4. Create document record in database
+    user_id = current_user.id if current_user else None
+
+    # 4. Create document record in database linked to user
     clean_filename = Path(file.filename).name.replace(" ", "_")
     doc_record = Document(
+        user_id=user_id,
         original_filename=file.filename,
         filename=clean_filename,
         file_path="",
@@ -55,8 +60,10 @@ async def upload_document(
     db.commit()
     db.refresh(doc_record)
 
-    # 5. Save file securely to upload directory
-    dest_path = settings.UPLOAD_DIR / f"{doc_record.id}_{clean_filename}"
+    # 5. Save file securely to user-dedicated directory
+    user_folder = settings.UPLOAD_DIR / (user_id if user_id else "public")
+    user_folder.mkdir(parents=True, exist_ok=True)
+    dest_path = user_folder / f"{doc_record.id}_{clean_filename}"
     try:
         with open(dest_path, "wb") as f:
             f.write(content)
@@ -94,8 +101,8 @@ async def upload_document(
         db.bulk_save_objects(db_chunks)
         db.commit()
 
-        # Index chunks in vector store (Supabase pgvector / ChromaDB)
-        vector_store.add_chunks(doc_record.id, chunks_data, db=db)
+        # Index chunks in user-isolated vector store (Supabase pgvector / user ChromaDB collection)
+        vector_store.add_chunks(doc_record.id, chunks_data, db=db, user_id=user_id)
 
         doc_record.status = "ready"
         if is_scanned:
@@ -113,25 +120,47 @@ async def upload_document(
     return doc_record
 
 @router.get("", response_model=List[DocumentResponse])
-def list_documents(db: Session = Depends(get_db)):
-    return db.query(Document).order_by(Document.created_at.desc()).all()
+def list_documents(
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Document)
+    if current_user:
+        query = query.filter(Document.user_id == current_user.id)
+    else:
+        query = query.filter(Document.user_id.is_(None))
+    return query.order_by(Document.created_at.desc()).all()
 
 @router.get("/{document_id}", response_model=DocumentDetailResponse)
-def get_document(document_id: str, db: Session = Depends(get_db)):
-    doc = db.query(Document).filter(Document.id == document_id).first()
+def get_document(
+    document_id: str,
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Document).filter(Document.id == document_id)
+    if current_user:
+        query = query.filter((Document.user_id == current_user.id) | (Document.user_id.is_(None)))
+    doc = query.first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found.")
     return doc
 
 @router.delete("/{document_id}", response_model=GenericMessageResponse)
-def delete_document(document_id: str, db: Session = Depends(get_db)):
-    doc = db.query(Document).filter(Document.id == document_id).first()
+def delete_document(
+    document_id: str,
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Document).filter(Document.id == document_id)
+    if current_user:
+        query = query.filter(Document.user_id == current_user.id)
+    doc = query.first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found.")
 
-    # 1. Delete vector store chunks from ChromaDB
+    # 1. Delete vector store chunks from user's ChromaDB collection
     try:
-        vector_store.delete_document_chunks(document_id)
+        vector_store.delete_document_chunks(document_id, db=db, user_id=doc.user_id)
     except Exception:
         pass
 
@@ -156,8 +185,16 @@ def delete_document(document_id: str, db: Session = Depends(get_db)):
     return GenericMessageResponse(message=f"Document '{doc.original_filename}' deleted successfully.", success=True)
 
 @router.get("/{document_id}/pages/{page_number}/image")
-def get_page_image(document_id: str, page_number: int, db: Session = Depends(get_db)):
-    doc = db.query(Document).filter(Document.id == document_id).first()
+def get_page_image(
+    document_id: str,
+    page_number: int,
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Document).filter(Document.id == document_id)
+    if current_user:
+        query = query.filter((Document.user_id == current_user.id) | (Document.user_id.is_(None)))
+    doc = query.first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found.")
     
@@ -172,8 +209,15 @@ def get_page_image(document_id: str, page_number: int, db: Session = Depends(get
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/{document_id}/download")
-def download_document(document_id: str, db: Session = Depends(get_db)):
-    doc = db.query(Document).filter(Document.id == document_id).first()
+def download_document(
+    document_id: str,
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Document).filter(Document.id == document_id)
+    if current_user:
+        query = query.filter((Document.user_id == current_user.id) | (Document.user_id.is_(None)))
+    doc = query.first()
     if not doc or not os.path.exists(doc.file_path):
         raise HTTPException(status_code=404, detail="File not found.")
     return FileResponse(

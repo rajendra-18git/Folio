@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security import hash_password, verify_password, create_access_token
-from app.core.auth import get_current_user
+from app.core.auth import get_current_user, get_optional_current_user
 from app.core.config import settings, get_effective_smtp_config, set_runtime_smtp_config
 from app.models.db_models import User, EmailVerificationOTP
 from app.services.email_service import generate_otp, send_otp_email, send_test_email
@@ -44,7 +44,7 @@ def register_user(request: UserRegisterRequest, db: Session = Depends(get_db)):
         hashed_password=hashed,
         full_name=request.full_name.strip() if request.full_name else None,
         is_active=True,
-        is_verified=False,
+        is_verified=True,
     )
     db.add(new_user)
     db.commit()

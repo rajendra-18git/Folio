@@ -1,9 +1,10 @@
 import json
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.models.db_models import Conversation, Message
+from app.core.auth import get_optional_current_user
+from app.models.db_models import Conversation, Message, User, Document
 from app.schemas.api_schemas import (
     ChatRequest, ChatResponse, ConversationResponse, MessageResponse, GenericMessageResponse
 )
@@ -30,12 +31,37 @@ def format_message(msg: Message) -> MessageResponse:
     )
 
 @router.post("", response_model=ChatResponse)
-def send_chat_message(request: ChatRequest, db: Session = Depends(get_db)):
+def send_chat_message(
+    request: ChatRequest,
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    user_id = current_user.id if current_user else None
+
+    # Validate that requested document_ids belong to the current user
+    if current_user and request.document_ids:
+        count = db.query(Document).filter(
+            Document.id.in_(request.document_ids),
+            (Document.user_id == current_user.id) | (Document.user_id.is_(None))
+        ).count()
+        if count != len(request.document_ids):
+            raise HTTPException(status_code=404, detail="One or more documents not found or access denied.")
+
+    # Validate that conversation belongs to current user if specified
+    if current_user and request.conversation_id:
+        conv = db.query(Conversation).filter(
+            Conversation.id == request.conversation_id,
+            (Conversation.user_id == current_user.id) | (Conversation.user_id.is_(None))
+        ).first()
+        if not conv:
+            raise HTTPException(status_code=404, detail="Conversation not found or access denied.")
+
     msg, conv = rag_service.answer_query(
         db=db,
         question=request.question,
         document_ids=request.document_ids,
-        conversation_id=request.conversation_id
+        conversation_id=request.conversation_id,
+        user_id=user_id
     )
     return ChatResponse(
         conversation_id=conv.id,
@@ -43,8 +69,16 @@ def send_chat_message(request: ChatRequest, db: Session = Depends(get_db)):
     )
 
 @router.get("/conversations", response_model=List[ConversationResponse])
-def list_conversations(db: Session = Depends(get_db)):
-    convs = db.query(Conversation).order_by(Conversation.updated_at.desc()).all()
+def list_conversations(
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Conversation)
+    if current_user:
+        query = query.filter(Conversation.user_id == current_user.id)
+    else:
+        query = query.filter(Conversation.user_id.is_(None))
+    convs = query.order_by(Conversation.updated_at.desc()).all()
     result = []
     for c in convs:
         result.append(ConversationResponse(
@@ -57,8 +91,15 @@ def list_conversations(db: Session = Depends(get_db)):
     return result
 
 @router.get("/{conversation_id}", response_model=ConversationResponse)
-def get_conversation(conversation_id: str, db: Session = Depends(get_db)):
-    c = db.query(Conversation).filter(Conversation.id == conversation_id).first()
+def get_conversation(
+    conversation_id: str,
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Conversation).filter(Conversation.id == conversation_id)
+    if current_user:
+        query = query.filter((Conversation.user_id == current_user.id) | (Conversation.user_id.is_(None)))
+    c = query.first()
     if not c:
         raise HTTPException(status_code=404, detail="Conversation not found.")
     return ConversationResponse(
@@ -70,8 +111,15 @@ def get_conversation(conversation_id: str, db: Session = Depends(get_db)):
     )
 
 @router.delete("/{conversation_id}", response_model=GenericMessageResponse)
-def delete_conversation(conversation_id: str, db: Session = Depends(get_db)):
-    c = db.query(Conversation).filter(Conversation.id == conversation_id).first()
+def delete_conversation(
+    conversation_id: str,
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Conversation).filter(Conversation.id == conversation_id)
+    if current_user:
+        query = query.filter(Conversation.user_id == current_user.id)
+    c = query.first()
     if not c:
         raise HTTPException(status_code=404, detail="Conversation not found.")
     db.delete(c)
