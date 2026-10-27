@@ -18,16 +18,30 @@ class AIProviderService:
     def __init__(self):
         pass
 
-    def is_configured(self) -> bool:
+    def is_configured(self, api_key: Optional[str] = None) -> bool:
         """Returns True if a valid Gemini API key is available and SDK is installed."""
-        key = get_effective_gemini_key()
+        key = (api_key.strip() if api_key else None) or get_effective_gemini_key()
         return bool(key and key.strip() and GENAI_SDK_AVAILABLE)
 
-    def get_client(self):
-        if not self.is_configured():
+    def get_client(self, api_key: Optional[str] = None):
+        if not self.is_configured(api_key=api_key):
             return None
-        key = get_effective_gemini_key()
+        key = (api_key.strip() if api_key else None) or get_effective_gemini_key()
         return genai.Client(api_key=key)
+
+    def get_user_ai_credentials(self, db, user_id: Optional[str]) -> Tuple[Optional[str], Optional[str]]:
+        """Returns (api_key, model_name) for a specific user."""
+        if user_id:
+            try:
+                from app.models.db_models import User
+                user = db.query(User).filter(User.id == user_id).first()
+                if user:
+                    user_key = user.gemini_api_key.strip() if user.gemini_api_key else None
+                    user_model = user.gemini_model.strip() if user.gemini_model else None
+                    return user_key, (user_model or get_effective_gemini_model())
+            except Exception:
+                pass
+        return get_effective_gemini_key(), get_effective_gemini_model()
 
     def _get_candidate_models(self, preferred_model: Optional[str] = None) -> List[str]:
         chosen = preferred_model or get_effective_gemini_model()
@@ -45,7 +59,8 @@ class AIProviderService:
         self,
         prompt: str,
         system_instruction: Optional[str] = None,
-        model_name: Optional[str] = None
+        model_name: Optional[str] = None,
+        api_key: Optional[str] = None
     ) -> Tuple[str, Dict[str, Any]]:
         """
         Generates text using Google Gemini with automatic model fallback.
@@ -55,7 +70,7 @@ class AIProviderService:
         """
         start_time = time.time()
 
-        if not self.is_configured():
+        if not self.is_configured(api_key=api_key):
             # Local retrieval-only / demo fallback
             latency = (time.time() - start_time) * 1000
             return (
@@ -66,7 +81,7 @@ class AIProviderService:
                 {"latency_ms": latency, "tokens_used": 0, "is_demo": True}
             )
 
-        client = self.get_client()
+        client = self.get_client(api_key=api_key)
         config = types.GenerateContentConfig(
             system_instruction=system_instruction if system_instruction else None,
             temperature=0.2,
@@ -120,21 +135,23 @@ class AIProviderService:
         self,
         image_bytes: bytes,
         prompt: str,
-        mime_type: str = "image/png"
+        mime_type: str = "image/png",
+        api_key: Optional[str] = None,
+        model_name: Optional[str] = None
     ) -> Tuple[str, Dict[str, Any]]:
         """
         Visual reasoning on page images.
         """
         start_time = time.time()
-        if not self.is_configured():
+        if not self.is_configured(api_key=api_key):
             latency = (time.time() - start_time) * 1000
             return (
                 "Visual analysis requires a configured AI API Key. Please add your key in Settings or `.env`.",
                 {"latency_ms": latency, "tokens_used": 0, "is_demo": True}
             )
 
-        client = self.get_client()
-        candidates = self._get_candidate_models()
+        client = self.get_client(api_key=api_key)
+        candidates = self._get_candidate_models(model_name)
         last_error = None
 
         image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
@@ -193,7 +210,7 @@ class AIProviderService:
         norm = math.sqrt(sum(x * x for x in vec)) or 1.0
         return [float(x / norm) for x in vec]
 
-    def get_embeddings(self, texts: List[str]) -> List[List[float]]:
+    def get_embeddings(self, texts: List[str], api_key: Optional[str] = None) -> List[List[float]]:
         """
         Generates vector embeddings for a batch of text chunks.
         Uses Gemini text-embedding-004 if configured, with deterministic fallback.
@@ -201,9 +218,9 @@ class AIProviderService:
         if not texts:
             return []
 
-        if self.is_configured():
+        if self.is_configured(api_key=api_key):
             try:
-                client = self.get_client()
+                client = self.get_client(api_key=api_key)
                 # Batch embed (batches of 16 to avoid payload limits)
                 results = []
                 batch_size = 16
@@ -227,9 +244,9 @@ class AIProviderService:
 
         return [self._generate_fallback_embedding(t) for t in texts]
 
-    def get_embedding(self, text: str) -> List[float]:
+    def get_embedding(self, text: str, api_key: Optional[str] = None) -> List[float]:
         """Generates a vector embedding for a single text query."""
-        res = self.get_embeddings([text])
+        res = self.get_embeddings([text], api_key=api_key)
         return res[0] if res else self._generate_fallback_embedding(text)
 
 ai_provider = AIProviderService()

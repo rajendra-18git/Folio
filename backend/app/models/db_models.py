@@ -17,6 +17,8 @@ class User(Base):
     full_name = Column(String(255), nullable=True)
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=True)
+    gemini_api_key = Column(String(512), nullable=True)
+    gemini_model = Column(String(128), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class EmailVerificationOTP(Base):

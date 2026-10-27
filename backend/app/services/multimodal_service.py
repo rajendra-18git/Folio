@@ -31,7 +31,8 @@ class MultimodalService:
 
         preview_url = f"/api/documents/{document_id}/pages/{page_number}/image"
 
-        is_configured = ai_provider.is_configured()
+        user_key, user_model = ai_provider.get_user_ai_credentials(db, doc.user_id)
+        is_configured = ai_provider.is_configured(api_key=user_key)
         if not is_configured:
             # Clearly report that visual analysis is unavailable when Gemini is not configured.
             return MultimodalAnalysisResponse(
@@ -66,7 +67,9 @@ class MultimodalService:
         text_output, metrics = ai_provider.generate_multimodal(
             image_bytes=image_bytes,
             prompt=prompt_text,
-            mime_type="image/png"
+            mime_type="image/png",
+            api_key=user_key,
+            model_name=user_model
         )
 
         return MultimodalAnalysisResponse(

@@ -58,7 +58,8 @@ class StudyService:
         ])
 
         # If Gemini is configured, generate structured JSON with Gemini
-        is_configured = ai_provider.is_configured()
+        user_key, user_model = ai_provider.get_user_ai_credentials(db, doc.user_id)
+        is_configured = ai_provider.is_configured(api_key=user_key)
         study_data: StudyContent
 
         if is_configured:
@@ -67,7 +68,9 @@ class StudyService:
                 topic=topic,
                 doc_name=doc.original_filename,
                 context_text=context_text,
-                citations=citations
+                citations=citations,
+                api_key=user_key,
+                model_name=user_model
             )
         else:
             # Deterministic, grounded local generation
@@ -82,6 +85,7 @@ class StudyService:
         # Save to database
         generation = StudyGeneration(
             document_id=document_id,
+            user_id=doc.user_id,
             study_type=study_type,
             topic=topic or "General",
             generated_content=study_data.model_dump_json()
@@ -97,7 +101,9 @@ class StudyService:
         topic: Optional[str],
         doc_name: str,
         context_text: str,
-        citations: List[Citation]
+        citations: List[Citation],
+        api_key: Optional[str] = None,
+        model_name: Optional[str] = None
     ) -> StudyContent:
         system_prompt = (
             "You are an expert educational curriculum and examination designer.\n"
@@ -129,7 +135,12 @@ Return JSON with format based on study type:
 - If practice_test: {{"practice_test": {{"title": "**Diagnostic Practice Test**", "duration_minutes": 45, "total_marks": 50, "sections": [{{"section_name": "**Part A: Fundamental Concepts**", "questions": ["..."]}}]}}}}
 """
 
-        raw_text, metrics = ai_provider.generate_text(prompt=user_prompt, system_instruction=system_prompt)
+        raw_text, metrics = ai_provider.generate_text(
+            prompt=user_prompt,
+            system_instruction=system_prompt,
+            model_name=model_name,
+            api_key=api_key
+        )
         
         # Clean potential ```json wrapping
         clean_json = raw_text.strip()

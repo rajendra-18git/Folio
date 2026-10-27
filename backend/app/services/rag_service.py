@@ -147,7 +147,9 @@ class RAGService:
             "FORMATTING REQUIREMENT: Use bolded headings (### **Heading**) and bold all definitions and defined terms (**Definition / Term:**) so key principles stand out clearly."
         )
 
-        if not ai_provider.is_configured():
+        user_key, user_model = ai_provider.get_user_ai_credentials(db, user_id)
+
+        if not ai_provider.is_configured(api_key=user_key):
             # Honest Fallback Mode
             formatted_chunks_text = "\n\n".join([
                 f"📄 **{c.document_name}** (Page {c.page_number})\n> *\"{c.excerpt}\"*"
@@ -171,7 +173,9 @@ class RAGService:
             # Live Gemini Grounded Generation
             raw_answer, metrics = ai_provider.generate_text(
                 prompt=grounded_prompt,
-                system_instruction=system_instruction
+                system_instruction=system_instruction,
+                model_name=user_model,
+                api_key=user_key
             )
             assistant_msg = Message(
                 conversation_id=conv.id,

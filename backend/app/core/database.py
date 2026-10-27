@@ -54,6 +54,8 @@ def init_db():
     if settings.is_postgres():
         safe_execute("ALTER TABLE messages ADD COLUMN IF NOT EXISTS tokens_used INTEGER DEFAULT 0")
         safe_execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE")
+        safe_execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS gemini_api_key VARCHAR(512)")
+        safe_execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS gemini_model VARCHAR(128)")
         safe_execute("ALTER TABLE document_chunks ADD COLUMN IF NOT EXISTS embedding VECTOR(768)")
         safe_execute("ALTER TABLE documents ADD COLUMN IF NOT EXISTS user_id VARCHAR(36)")
         safe_execute("ALTER TABLE conversations ADD COLUMN IF NOT EXISTS user_id VARCHAR(36)")
@@ -64,6 +66,8 @@ def init_db():
     else:
         safe_execute("ALTER TABLE messages ADD COLUMN tokens_used INTEGER DEFAULT 0")
         safe_execute("ALTER TABLE users ADD COLUMN is_verified BOOLEAN DEFAULT 0")
+        safe_execute("ALTER TABLE users ADD COLUMN gemini_api_key VARCHAR(512)")
+        safe_execute("ALTER TABLE users ADD COLUMN gemini_model VARCHAR(128)")
         safe_execute("ALTER TABLE document_chunks ADD COLUMN embedding VECTOR(768)")
         safe_execute("ALTER TABLE documents ADD COLUMN user_id VARCHAR(36)")
         safe_execute("ALTER TABLE conversations ADD COLUMN user_id VARCHAR(36)")

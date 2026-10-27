@@ -14,7 +14,8 @@ class ComparisonAgent:
     def compare_documents(
         db: Session,
         document_ids: List[str],
-        topic_focus: Optional[str] = None
+        topic_focus: Optional[str] = None,
+        user_id: Optional[str] = None
     ) -> DocumentComparison:
         """
         Bounded multi-step comparison workflow:
@@ -50,11 +51,16 @@ class ComparisonAgent:
                     score=c.get("score")
                 ))
 
-        # Check if Gemini is configured
-        is_configured = ai_provider.is_configured()
+        # Check if Gemini is configured for this user
+        effective_user_id = user_id or (docs[0].user_id if docs else None)
+        user_key, user_model = ai_provider.get_user_ai_credentials(db, effective_user_id)
+        is_configured = ai_provider.is_configured(api_key=user_key)
 
         if is_configured:
-            report = ComparisonAgent._gemini_bounded_agent(docs, doc_passages, topic_focus, all_citations)
+            report = ComparisonAgent._gemini_bounded_agent(
+                docs, doc_passages, topic_focus, all_citations,
+                api_key=user_key, model_name=user_model
+            )
         else:
             report = ComparisonAgent._local_bounded_comparison(docs, doc_passages, topic_focus, all_citations)
 
@@ -74,7 +80,9 @@ class ComparisonAgent:
         docs: List[Document],
         doc_passages: Dict[str, List[Dict[str, Any]]],
         topic_focus: Optional[str],
-        citations: List[Citation]
+        citations: List[Citation],
+        api_key: Optional[str] = None,
+        model_name: Optional[str] = None
     ) -> ComparisonReport:
         context_sections = []
         for doc in docs:
@@ -115,7 +123,12 @@ Return a JSON object with this exact structure:
   "synthesis_conclusion": "..."
 }}
 """
-        raw_text, metrics = ai_provider.generate_text(prompt=user_prompt, system_instruction=system_prompt)
+        raw_text, metrics = ai_provider.generate_text(
+            prompt=user_prompt,
+            system_instruction=system_prompt,
+            model_name=model_name,
+            api_key=api_key
+        )
         clean_json = raw_text.strip()
         if clean_json.startswith("```"):
             clean_json = re.sub(r"^```(?:json)?\s*", "", clean_json)

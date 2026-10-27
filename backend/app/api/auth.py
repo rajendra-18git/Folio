@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security import hash_password, verify_password, create_access_token
 from app.core.auth import get_current_user, get_optional_current_user
-from app.core.config import settings, get_effective_smtp_config, set_runtime_smtp_config
+from app.core.config import settings, get_effective_smtp_config, set_runtime_smtp_config, set_runtime_gemini_key, set_runtime_gemini_model
 from app.models.db_models import User, EmailVerificationOTP
 from app.services.email_service import generate_otp, send_otp_email, send_test_email
 from app.schemas.api_schemas import (
@@ -79,7 +79,13 @@ def login_user(request: UserLoginRequest, db: Session = Depends(get_db)):
         )
     
     token = create_access_token(data={"sub": user.id, "email": user.email})
-    
+
+    # Activate stored user API key immediately upon login
+    if user.gemini_api_key:
+        set_runtime_gemini_key(user.gemini_api_key)
+    if user.gemini_model:
+        set_runtime_gemini_model(user.gemini_model)
+
     return AuthTokenResponse(
         access_token=token,
         token_type="bearer",
@@ -177,6 +183,12 @@ def verify_otp_and_login(request: VerifyOtpLoginRequest, db: Session = Depends(g
 
     # Issue JWT Token
     token = create_access_token(data={"sub": user.id, "email": user.email})
+
+    # Activate stored user API key immediately upon OTP login
+    if user.gemini_api_key:
+        set_runtime_gemini_key(user.gemini_api_key)
+    if user.gemini_model:
+        set_runtime_gemini_model(user.gemini_model)
 
     return AuthTokenResponse(
         access_token=token,
@@ -278,4 +290,8 @@ def test_smtp_delivery(request: SendOtpRequest):
 @router.get("/me", response_model=UserResponse)
 def get_current_user_profile(current_user: User = Depends(get_current_user)):
     """Retrieve profile information for the authenticated user."""
+    if current_user.gemini_api_key:
+        set_runtime_gemini_key(current_user.gemini_api_key)
+    if current_user.gemini_model:
+        set_runtime_gemini_model(current_user.gemini_model)
     return UserResponse.model_validate(current_user)
