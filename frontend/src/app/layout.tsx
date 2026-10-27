@@ -27,6 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full scroll-smooth light" data-theme="light">
       <head>
+        {/* Force light-mode: prevents system dark-mode from affecting the page */}
+        <meta name="color-scheme" content="light" />
+        <meta name="darkreader-lock" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

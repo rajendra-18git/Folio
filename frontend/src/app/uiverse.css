@@ -67,28 +67,7 @@ a.button.type1 {
   color: #ffffff !important;
 }
 
-/* Dark Mode Theme Support */
-[data-theme="dark"] .button.type1,
-.dark .button.type1 {
-  border-color: rgba(255, 255, 255, 0.5);
-  color: #f1f5f9;
-}
-
-[data-theme="dark"] .button.type1 .btn-txt {
-  color: #f1f5f9;
-}
-
-[data-theme="dark"] .button.type1::after,
-.dark .button.type1::after {
-  background-color: #0284c7;
-}
-
-[data-theme="dark"] .button.type1:hover,
-.dark .button.type1:hover {
-  box-shadow: 0 0 35px rgba(2, 132, 199, 0.6);
-  border-color: #0284c7;
-  color: #ffffff !important;
-}
+/* Dark-mode overrides removed — this site is always light-mode */
 
 /* ========================================================
    From Uiverse.io by prikshit_1236 - AI Button

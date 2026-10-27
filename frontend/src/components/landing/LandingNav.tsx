@@ -3,15 +3,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { DocuMindLogo } from '@/components/DocuMindLogo';
-import { Menu, X, ArrowRight, LogOut, User as UserIcon } from 'lucide-react';
-import { useTheme } from '@/context/ThemeContext';
+import { Menu, X, ArrowRight, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import gsap from 'gsap';
 
 export function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated, logout } = useAuth();
   const navRef = useRef<HTMLElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
@@ -41,19 +39,13 @@ export function LandingNav() {
     { label: 'FAQ', href: '#faq' },
   ];
 
-  const isLight = theme === 'light';
-
   return (
     <header
       ref={navRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? isLight
-            ? 'h-16 bg-white/85 backdrop-blur-2xl border-b border-sky-200/60 shadow-[0_4px_25px_rgba(15,23,42,0.06)]'
-            : 'h-16 bg-[#040914]/85 backdrop-blur-2xl border-b border-[#ADD8E6]/15 shadow-[0_10px_30px_rgba(0,0,0,0.6)]'
-          : isLight
-          ? 'h-20 bg-white/40 backdrop-blur-md border-b border-sky-100/60'
-          : 'h-20 bg-[#040914]/40 backdrop-blur-md border-b border-[#ADD8E6]/10'
+          ? 'h-16 bg-white/85 backdrop-blur-2xl border-b border-sky-200/60 shadow-[0_4px_25px_rgba(15,23,42,0.06)]'
+          : 'h-20 bg-white/40 backdrop-blur-md border-b border-sky-100/60'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
@@ -68,14 +60,10 @@ export function LandingNav() {
             <a
               key={link.label}
               href={link.href}
-              className={`relative group px-4 py-1.5 rounded-full text-center transition-all duration-200 cursor-pointer overflow-hidden backdrop-blur-xl select-none ${
-                isLight
-                  ? 'bg-gradient-to-b from-white/95 via-white/80 to-sky-50/60 text-slate-700 border border-white/90 border-t-white shadow-[0_2px_8px_rgba(2,132,199,0.08),inset_0_1px_1px_rgba(255,255,255,0.9),inset_0_-1px_2px_rgba(2,132,199,0.06)] hover:from-white hover:to-sky-100/70 hover:text-sky-800 hover:border-sky-300/80 hover:shadow-[0_4px_16px_rgba(2,132,199,0.18),inset_0_1px_2px_rgba(255,255,255,1)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]'
-                  : 'bg-gradient-to-b from-white/[0.12] via-white/[0.06] to-transparent text-[#ADD8E6] border border-white/[0.14] border-t-white/[0.32] shadow-[0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-1px_0_rgba(0,0,0,0.3)] hover:from-[#60D5FA]/25 hover:via-white/[0.08] hover:to-[#0284C7]/15 hover:text-white hover:border-[#60D5FA]/60 hover:shadow-[0_0_20px_rgba(96,213,250,0.35),inset_0_1px_1px_rgba(255,255,255,0.6)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]'
-              }`}
+              className="relative group px-4 py-1.5 rounded-full text-center transition-all duration-200 cursor-pointer overflow-hidden backdrop-blur-xl select-none bg-gradient-to-b from-white/95 via-white/80 to-sky-50/60 text-slate-700 border border-white/90 border-t-white shadow-[0_2px_8px_rgba(2,132,199,0.08),inset_0_1px_1px_rgba(255,255,255,0.9),inset_0_-1px_2px_rgba(2,132,199,0.06)] hover:from-white hover:to-sky-100/70 hover:text-sky-800 hover:border-sky-300/80 hover:shadow-[0_4px_16px_rgba(2,132,199,0.18),inset_0_1px_2px_rgba(255,255,255,1)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
             >
               {/* Glossy top specular reflection highlight */}
-              <span className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/40 dark:from-white/25 to-transparent rounded-t-full pointer-events-none" />
+              <span className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/40 to-transparent rounded-t-full pointer-events-none" />
               <span className="relative z-10 tracking-wide font-medium">{link.label}</span>
             </a>
           ))}
@@ -96,11 +84,7 @@ export function LandingNav() {
               <button
                 onClick={logout}
                 title="Sign Out"
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-[12px] font-semibold border transition ${
-                  isLight
-                    ? 'border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-rose-600'
-                    : 'border-white/10 text-slate-300 hover:bg-white/[0.06] hover:text-rose-400'
-                }`}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full text-[12px] font-semibold border transition border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-rose-600"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out</span>
@@ -110,11 +94,7 @@ export function LandingNav() {
             <>
               <Link
                 href="/login"
-                className={`text-[13px] font-semibold px-3 py-2 transition ${
-                  isLight
-                    ? 'text-slate-600 hover:text-slate-900'
-                    : 'text-[#8BA8C8] hover:text-white'
-                }`}
+                className="text-[13px] font-semibold px-3 py-2 transition text-slate-600 hover:text-slate-900"
               >
                 Sign In
               </Link>
@@ -136,11 +116,7 @@ export function LandingNav() {
         <div className="md:hidden flex items-center gap-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`p-2 rounded-xl transition ${
-              isLight
-                ? 'text-slate-700 hover:bg-slate-100'
-                : 'text-[#8BA8C8] hover:text-white hover:bg-white/[0.06]'
-            }`}
+            className="p-2 rounded-xl transition text-slate-700 hover:bg-slate-100"
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -150,24 +126,14 @@ export function LandingNav() {
 
       {/* Mobile Slide-down Drawer */}
       {mobileMenuOpen && (
-        <div
-          className={`md:hidden px-6 py-6 space-y-4 shadow-2xl animate-in slide-in-from-top-2 duration-200 text-left font-absans border-b backdrop-blur-2xl ${
-            isLight
-              ? 'bg-white/98 border-sky-200/60'
-              : 'bg-[#040914]/98 border-[#ADD8E6]/15'
-          }`}
-        >
+        <div className="md:hidden px-6 py-6 space-y-4 shadow-2xl animate-in slide-in-from-top-2 duration-200 text-left font-absans border-b backdrop-blur-2xl bg-white/98 border-sky-200/60">
           <nav className="flex flex-col space-y-3">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`text-sm font-medium py-2 border-b ${
-                  isLight
-                    ? 'text-slate-700 hover:text-sky-700 border-slate-100'
-                    : 'text-[#8BA8C8] hover:text-white border-white/[0.04]'
-                }`}
+                className="text-sm font-medium py-2 border-b text-slate-700 hover:text-sky-700 border-slate-100"
               >
                 {link.label}
               </a>
@@ -189,11 +155,7 @@ export function LandingNav() {
                     logout();
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full text-center py-2.5 rounded-xl text-sm font-semibold border ${
-                    isLight
-                      ? 'text-rose-600 bg-rose-50 border-rose-200'
-                      : 'text-rose-400 bg-rose-500/10 border-rose-500/20'
-                  }`}
+                  className="w-full text-center py-2.5 rounded-xl text-sm font-semibold border text-rose-600 bg-rose-50 border-rose-200"
                 >
                   Sign Out
                 </button>
@@ -203,11 +165,7 @@ export function LandingNav() {
                 <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`w-full text-center py-2.5 rounded-xl text-sm font-semibold border ${
-                    isLight
-                      ? 'text-slate-800 bg-slate-50 border-slate-200'
-                      : 'text-white bg-white/[0.06] border-white/10'
-                  }`}
+                  className="w-full text-center py-2.5 rounded-xl text-sm font-semibold border text-slate-800 bg-slate-50 border-slate-200"
                 >
                   Sign In
                 </Link>

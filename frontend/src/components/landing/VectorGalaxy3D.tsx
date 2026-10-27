@@ -402,8 +402,8 @@ export function VectorGalaxy3D() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-50 dark:bg-[#0B1936] border border-sky-200 dark:border-[#ADD8E6]/20 text-sky-800 dark:text-[#60D5FA] text-xs font-bold tracking-widest uppercase font-mono shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-sky-600 dark:text-[#60D5FA]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold tracking-widest uppercase font-mono shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-sky-600" />
             5,000+ POINT INSTANCED VECTOR GALAXY
           </div>
           <h2 className="text-3xl sm:text-5xl font-normal font-absans tracking-tight text-[var(--color-text-primary)] leading-tight">
@@ -423,25 +423,25 @@ export function VectorGalaxy3D() {
           <div className="lg:col-span-7 relative">
             <div
               ref={containerRef}
-              className="relative w-full h-[440px] sm:h-[520px] rounded-2xl overflow-hidden bg-slate-50/90 dark:bg-[#060F22]/95 border border-sky-200/60 dark:border-[#ADD8E6]/15 cursor-grab active:cursor-grabbing select-none shadow-2xl"
+              className="relative w-full h-[440px] sm:h-[520px] rounded-2xl overflow-hidden bg-slate-50/90 border border-sky-200/60 cursor-grab active:cursor-grabbing select-none shadow-2xl"
             >
               <canvas ref={canvasRef} className="w-full h-full block" />
 
               {/* 3D Overlay Help Tag */}
-              <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/90 dark:bg-[#040914]/85 border border-slate-200 dark:border-[#ADD8E6]/20 text-xs text-slate-800 dark:text-[#FFFAFA] backdrop-blur-md shadow-sm">
-                <Compass className="w-3.5 h-3.5 text-sky-600 dark:text-[#60D5FA]" />
+              <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/90 border border-slate-200 text-xs text-slate-800 backdrop-blur-md shadow-sm">
+                <Compass className="w-3.5 h-3.5 text-sky-600" />
                 <span>Drag to Orbit · Ctrl + Scroll to Zoom · Click Centroid to Fly</span>
               </div>
 
               {/* Zoom Controls & Reset Button */}
               <div className="absolute bottom-4 right-4 flex items-center gap-2">
-                <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/90 dark:bg-[#0B1936]/90 border border-slate-200 dark:border-[#ADD8E6]/20 text-[11px] font-mono text-sky-700 dark:text-[#60D5FA] shadow-sm">
+                <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/90 border border-slate-200 text-[11px] font-mono text-sky-700 shadow-sm">
                   <span>{zoomLevel}m</span>
                 </div>
 
                 <button
                   onClick={handleZoomIn}
-                  className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/90 dark:bg-[#0B1936]/90 hover:bg-slate-100 dark:hover:bg-[#142c5b] text-slate-800 dark:text-white border border-slate-200 dark:border-[#ADD8E6]/20 transition-colors cursor-pointer shadow-sm"
+                  className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/90 hover:bg-slate-100 text-slate-800 border border-slate-200 transition-colors cursor-pointer shadow-sm"
                   title="Zoom In"
                   aria-label="Zoom in"
                 >
@@ -450,7 +450,7 @@ export function VectorGalaxy3D() {
 
                 <button
                   onClick={handleZoomOut}
-                  className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/90 dark:bg-[#0B1936]/90 hover:bg-slate-100 dark:hover:bg-[#142c5b] text-slate-800 dark:text-white border border-slate-200 dark:border-[#ADD8E6]/20 transition-colors cursor-pointer shadow-sm"
+                  className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/90 hover:bg-slate-100 text-slate-800 border border-slate-200 transition-colors cursor-pointer shadow-sm"
                   title="Zoom Out"
                   aria-label="Zoom out"
                 >
@@ -459,7 +459,7 @@ export function VectorGalaxy3D() {
 
                 <button
                   onClick={handleReset}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/90 dark:bg-[#0B1936]/90 hover:bg-slate-100 dark:hover:bg-[#142c5b] text-xs text-slate-800 dark:text-white border border-slate-200 dark:border-[#ADD8E6]/20 transition-colors cursor-pointer shadow-sm"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/90 hover:bg-slate-100 text-xs text-slate-800 border border-slate-200 transition-colors cursor-pointer shadow-sm"
                   title="Reset Camera View"
                 >
                   <RotateCw className="w-3.5 h-3.5" />
@@ -471,21 +471,21 @@ export function VectorGalaxy3D() {
               {hoveredCluster && tooltipPos && (
                 <div
                   style={{ left: tooltipPos.x, top: tooltipPos.y }}
-                  className="absolute z-30 pointer-events-none p-3 rounded-xl bg-white/95 dark:bg-[#040914]/95 border border-sky-300 dark:border-[#60D5FA]/40 shadow-2xl backdrop-blur-xl text-left max-w-xs animate-in fade-in duration-150"
+                  className="absolute z-30 pointer-events-none p-3 rounded-xl bg-white/95 border border-sky-300 shadow-2xl backdrop-blur-xl text-left max-w-xs animate-in fade-in duration-150"
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <span
                       className="w-2.5 h-2.5 rounded-full"
                       style={{ backgroundColor: hoveredCluster.hexColor }}
                     />
-                    <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                    <span className="text-xs font-bold text-slate-900 truncate">
                       {hoveredCluster.name}
                     </span>
                   </div>
-                  <div className="text-[10px] font-mono text-sky-700 dark:text-[#60D5FA] mb-1">
+                  <div className="text-[10px] font-mono text-sky-700 mb-1">
                     {hoveredCluster.count.toLocaleString()} Chunks · Cosine: {hoveredCluster.cosSim}
                   </div>
-                  <p className="text-[11px] text-slate-600 dark:text-slate-300 italic line-clamp-2">
+                  <p className="text-[11px] text-slate-600 italic line-clamp-2">
                     &ldquo;{hoveredCluster.extractedPassage}&rdquo;
                   </p>
                 </div>
@@ -502,8 +502,8 @@ export function VectorGalaxy3D() {
                     onClick={() => handleSelectCluster(c)}
                     className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-sky-50 dark:bg-[#0B1936] text-sky-950 dark:text-white border-2 shadow-lg shadow-[#0284C7]/20 scale-[1.03]'
-                        : 'bg-white/90 dark:bg-[#060F22]/80 text-slate-700 dark:text-[#8BA8C8] border border-slate-200 dark:border-white/[0.08] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-[#0B1936]/70 shadow-sm'
+                        ? 'bg-sky-50 text-sky-950 border-2 shadow-lg shadow-[#0284C7]/20 scale-[1.03]'
+                        : 'bg-white/90 text-slate-700 border border-slate-200 hover:text-slate-900 hover:bg-slate-50 shadow-sm'
                     }`}
                     style={{
                       borderColor: isActive ? c.hexColor : undefined,
@@ -522,14 +522,14 @@ export function VectorGalaxy3D() {
 
           {/* Right Inspector: Live Concept Telemetry (5 Cols) */}
           <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-5 text-left">
-            <div className="p-6 rounded-2xl bg-white/90 dark:bg-[#0B1936]/80 border border-slate-200 dark:border-[#ADD8E6]/20 relative overflow-hidden shadow-xl">
+            <div className="p-6 rounded-2xl bg-white/90 border border-slate-200 relative overflow-hidden shadow-xl">
               <div
                 className="absolute top-0 right-0 w-36 h-36 rounded-full blur-3xl opacity-20 pointer-events-none"
                 style={{ backgroundColor: activeCluster.hexColor }}
               />
 
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-mono tracking-wider uppercase px-2.5 py-1 rounded bg-sky-100 dark:bg-[#040914] text-sky-800 dark:text-[#60D5FA] border border-sky-200 dark:border-[#ADD8E6]/20 font-bold">
+                <span className="text-[11px] font-mono tracking-wider uppercase px-2.5 py-1 rounded bg-sky-100 text-sky-800 border border-sky-200 font-bold">
                   {activeCluster.category}
                 </span>
                 <span className="flex items-center gap-1.5 text-xs font-mono font-bold" style={{ color: activeCluster.hexColor }}>
@@ -547,7 +547,7 @@ export function VectorGalaxy3D() {
                 <span className="text-[11px] uppercase tracking-wider text-[var(--color-text-secondary)] font-bold block mb-1">
                   Natural Language Query
                 </span>
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-black/60 border border-slate-200 dark:border-white/10 text-xs text-sky-800 dark:text-[#60D5FA] font-mono flex items-start gap-2">
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-sky-800 font-mono flex items-start gap-2">
                   <span className="text-[#0284C7] font-bold">&gt;</span>
                   <span>&quot;{activeCluster.sampleQuery}&quot;</span>
                 </div>
@@ -559,12 +559,12 @@ export function VectorGalaxy3D() {
                   <span className="text-[11px] uppercase tracking-wider text-[var(--color-text-secondary)] font-bold">
                     Extracted Grounded Passage
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-bold">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 font-bold">
                     Cosine Match: {activeCluster.cosSim}
                   </span>
                 </div>
                 <div
-                  className="p-4 rounded-xl bg-slate-50 dark:bg-black/50 border border-slate-200 dark:border-white/10 text-xs text-slate-700 dark:text-slate-200 leading-relaxed font-sans italic border-l-4"
+                  className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed font-sans italic border-l-4"
                   style={{ borderLeftColor: activeCluster.hexColor }}
                 >
                   &ldquo;{activeCluster.extractedPassage}&rdquo;
@@ -574,23 +574,23 @@ export function VectorGalaxy3D() {
 
             {/* Architecture Metrics Card */}
             <div className="space-y-3">
-              <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-white/90 dark:bg-[#0B1936]/80 border border-slate-200 dark:border-[#ADD8E6]/20 text-center shadow-lg">
+              <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-white/90 border border-slate-200 text-center shadow-lg">
                 <div>
-                  <div className="text-xl font-normal font-absans text-sky-700 dark:text-[#60D5FA]">1,536</div>
+                  <div className="text-xl font-normal font-absans text-sky-700">1,536</div>
                   <div className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-wider font-bold">Dimensions</div>
                 </div>
                 <div>
-                  <div className="text-xl font-normal font-absans text-[#0284C7] dark:text-[#38BDF8]">&lt; 14ms</div>
+                  <div className="text-xl font-normal font-absans text-[#0284C7]">&lt; 14ms</div>
                   <div className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-wider font-bold">Latency</div>
                 </div>
                 <div>
-                  <div className="text-xl font-normal font-absans text-emerald-600 dark:text-emerald-400">0.0%</div>
+                  <div className="text-xl font-normal font-absans text-emerald-600">0.0%</div>
                   <div className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-wider font-bold">Hallucination</div>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-100/70 dark:bg-white/[0.02] border border-slate-200 dark:border-white/[0.06] text-[11px] text-[var(--color-text-secondary)] flex items-center gap-2">
-                <Info className="w-3.5 h-3.5 text-sky-600 dark:text-[#60D5FA] shrink-0" />
+              <div className="p-3.5 rounded-xl bg-slate-100/70 border border-slate-200 text-[11px] text-[var(--color-text-secondary)] flex items-center gap-2">
+                <Info className="w-3.5 h-3.5 text-sky-600 shrink-0" />
                 <span>Instanced mesh with 5,000+ points rendering at 60fps with nearest-neighbor filaments.</span>
               </div>
             </div>

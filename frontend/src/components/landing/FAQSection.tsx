@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import gsap from 'gsap';
 import { useScrollReveal, useStaggerReveal } from '@/lib/useScrollAnimation';
+import gsap from 'gsap';
+import { useRef, useEffect } from 'react';
 
 export function FAQSection() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -84,11 +85,11 @@ export function FAQSection() {
   ];
 
   return (
-    <section id="faq" className="py-28 bg-transparent dark:bg-[#040914] border-b border-[var(--color-border)] relative overflow-hidden transition-colors duration-300">
+    <section id="faq" className="py-28 bg-transparent border-b border-[var(--color-border)] relative overflow-hidden transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         {/* Header — scroll reveal */}
         <div ref={headerRef} className="text-center max-w-2xl mx-auto mb-14 space-y-4">
-          <span className="text-xs uppercase font-bold tracking-widest text-sky-700 dark:text-[#60D5FA] block font-mono">
+          <span className="text-xs uppercase font-bold tracking-widest text-sky-700 block font-mono">
             Got Questions?
           </span>
           <h2 className="text-3xl sm:text-5xl font-normal font-absans text-[var(--color-text-primary)] tracking-[-0.03em]">
@@ -106,17 +107,17 @@ export function FAQSection() {
             return (
               <div
                 key={i}
-                className="faq-item rounded-2xl bg-white dark:bg-[#0B1936]/70 border border-slate-200 dark:border-[#ADD8E6]/15 overflow-hidden transition-all duration-300 hover:border-sky-300 dark:hover:border-[#60D5FA]/30 shadow-sm dark:shadow-none"
+                className="faq-item rounded-2xl bg-white border border-slate-200 overflow-hidden transition-all duration-300 hover:border-sky-300 shadow-sm"
               >
                 <button
                   onClick={() => handleToggle(i)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition"
+                  className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-sm font-bold text-slate-900 dark:text-white tracking-tight font-absans">
+                  <span className="text-sm font-bold text-slate-900 tracking-tight font-absans">
                     {faq.q}
                   </span>
-                  <div className="p-1 rounded-full bg-sky-50 dark:bg-[#040914] border border-sky-200 dark:border-[#ADD8E6]/20 text-sky-700 dark:text-[#60D5FA] shrink-0">
+                  <div className="p-1 rounded-full bg-sky-50 border border-sky-200 text-sky-700 shrink-0">
                     {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   </div>
                 </button>
@@ -124,7 +125,7 @@ export function FAQSection() {
                 {isOpen && (
                   <div
                     ref={(el) => { answerRefs.current[i] = el; }}
-                    className="px-5 pb-5 pt-1 text-xs text-slate-600 dark:text-[#8BA8C8] font-absans font-normal leading-relaxed border-t border-slate-100 dark:border-white/5 bg-slate-50/60 dark:bg-black/30 overflow-hidden"
+                    className="px-5 pb-5 pt-1 text-xs text-slate-600 font-absans font-normal leading-relaxed border-t border-slate-100 bg-slate-50/60 overflow-hidden"
                   >
                     {faq.a}
                   </div>

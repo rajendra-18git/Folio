@@ -48,3 +48,13 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 Thumbs.db
+
+# Agent Skills, Brag Outputs & Media Videos
+.agents/
+skills-lock.json
+brag-output/
+brag-output-*/
+*.mp4
+*.webm
+preview_showcase.html
+

@@ -146,11 +146,11 @@ export function LandingHero() {
             {/* Badge */}
             <div
               ref={badgeRef}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-sky-50 dark:bg-[#0B1936]/90 border border-sky-200 dark:border-[#60D5FA]/30 text-sky-800 dark:text-[#60D5FA] text-xs font-bold tracking-widest uppercase shadow-sm dark:shadow-xl backdrop-blur-md"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold tracking-widest uppercase shadow-sm backdrop-blur-md"
             >
               <span className="flex h-2.5 w-2.5 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-500 dark:bg-[#60D5FA] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-sky-600 dark:bg-[#60D5FA]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-500 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-sky-600" />
               </span>
               <span className="font-sans font-semibold tracking-wider text-[11px]">LAUNCHING NOW · FOLIO 2.0</span>
             </div>
@@ -189,7 +189,7 @@ export function LandingHero() {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none" />
                 <span className="relative z-10 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-sky-200 dark:text-[#60D5FA]" />
+                  <Sparkles className="w-4 h-4 text-sky-200" />
                   <span className="font-sans font-semibold tracking-normal text-[15px]">Start for Free</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
@@ -197,25 +197,25 @@ export function LandingHero() {
 
               <a
                 href="#workflows"
-                className="inline-flex items-center gap-2 px-7 py-4 rounded-full font-semibold text-sm text-slate-700 dark:text-[#FFFAFA] hover:text-sky-700 dark:hover:text-[#60D5FA] bg-slate-100 hover:bg-slate-200 dark:bg-white/[0.04] dark:hover:bg-white/[0.09] border border-slate-200 dark:border-white/10 backdrop-blur-md transition-all duration-200 shadow-sm"
+                className="inline-flex items-center gap-2 px-7 py-4 rounded-full font-semibold text-sm text-slate-700 hover:text-sky-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 backdrop-blur-md transition-all duration-200 shadow-sm"
               >
                 <span>See How It Works</span>
-                <ChevronRight className="w-4 h-4 text-slate-500 dark:text-[#8BA8C8]" />
+                <ChevronRight className="w-4 h-4 text-slate-500" />
               </a>
             </div>
 
             {/* Trust Highlights */}
             <div ref={trustRef} className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2.5 text-xs text-[var(--color-text-secondary)]">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-sky-600 dark:text-[#60D5FA]" />
+                <ShieldCheck className="w-4 h-4 text-sky-600" />
                 <span>Zero-Hallucination Evidence Grounding</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#0284C7] dark:text-[#38BDF8]" />
+                <CheckCircle2 className="w-4 h-4 text-[#0284C7]" />
                 <span>150 DPI Visual Page Proofs</span>
               </div>
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-sky-500 dark:text-[#ADD8E6]" />
+                <Lock className="w-4 h-4 text-sky-500" />
                 <span>Local Vector Privacy</span>
               </div>
             </div>
@@ -238,22 +238,22 @@ export function LandingHero() {
                   transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)',
                   transition: 'transform 0.15s ease-out',
                 }}
-                className="w-full relative prism-glass rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.1)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] [transform-style:preserve-3d]"
+                className="w-full relative prism-glass rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.1)] [transform-style:preserve-3d]"
               >
                 {/* Window Titlebar */}
-                <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10 [transform:translateZ(15px)]">
-                  <div className="flex items-center gap-2 font-mono text-xs text-slate-600 dark:text-[#8BA8C8]">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-200 [transform:translateZ(15px)]">
+                  <div className="flex items-center gap-2 font-mono text-xs text-slate-600">
                     <div className="flex gap-1.5">
                       <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
                       <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
                     </div>
-                    <span className="ml-2 text-slate-800 dark:text-white font-medium flex items-center gap-1.5 text-[11px]">
-                      <FileText className="w-3.5 h-3.5 text-sky-600 dark:text-[#60D5FA]" />
+                    <span className="ml-2 text-slate-800 font-medium flex items-center gap-1.5 text-[11px]">
+                      <FileText className="w-3.5 h-3.5 text-sky-600" />
                       Quantum_Attention_Architectures.pdf
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-[#0B1936] border border-emerald-200 dark:border-white/10 text-[10px] font-mono text-emerald-700 dark:text-emerald-400 shadow-sm">
+                  <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[10px] font-mono text-emerald-700 shadow-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     <span>Verified 150 DPI</span>
                   </div>
@@ -265,31 +265,31 @@ export function LandingHero() {
                     How does the paper reduce quadratic attention memory for context lengths &gt; 32k tokens?
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-white dark:bg-[#060F22]/95 border border-slate-200 dark:border-[#ADD8E6]/15 text-xs leading-relaxed space-y-3 shadow-md dark:shadow-xl">
+                  <div className="p-4 rounded-2xl bg-white border border-slate-200 text-xs leading-relaxed space-y-3 shadow-md">
                     <div className="flex items-center justify-between text-[11px] font-bold">
-                      <span className="flex items-center gap-1.5 text-sky-700 dark:text-[#60D5FA]">
-                        <Sparkles className="w-3.5 h-3.5 text-sky-600 dark:text-[#60D5FA]" />
+                      <span className="flex items-center gap-1.5 text-sky-700">
+                        <Sparkles className="w-3.5 h-3.5 text-sky-600" />
                         Grounded Answer · Zero Hallucination
                       </span>
-                      <span className="text-emerald-600 dark:text-emerald-400 font-mono text-[10px]">
+                      <span className="text-emerald-600 font-mono text-[10px]">
                         Cosine: 0.962 · 38ms
                       </span>
                     </div>
 
-                    <p className="text-slate-700 dark:text-slate-200 leading-relaxed text-xs">
-                      The architecture decomposes the kernel matrix via randomized feature maps, reducing the quadratic space complexity <span className="font-mono text-sky-700 dark:text-[#60D5FA]">O(n²·d)</span> to linear space <span className="font-mono text-sky-700 dark:text-[#60D5FA]">O(n·d²)</span>. This eliminates GPU memory bottlenecks by 78% for &gt;32k tokens without retraining.
+                    <p className="text-slate-700 leading-relaxed text-xs">
+                      The architecture decomposes the kernel matrix via randomized feature maps, reducing the quadratic space complexity <span className="font-mono text-sky-700">O(n²·d)</span> to linear space <span className="font-mono text-sky-700">O(n·d²)</span>. This eliminates GPU memory bottlenecks by 78% for &gt;32k tokens without retraining.
                     </p>
 
                     {/* Citation Preview */}
-                    <div className="p-3 rounded-xl bg-sky-50/80 dark:bg-white/[0.04] border border-sky-200 dark:border-[#60D5FA]/30 [transform:translateZ(20px)] shadow-sm space-y-1.5">
-                      <div className="flex items-center justify-between text-[10px] font-mono text-slate-600 dark:text-[#8BA8C8]">
-                        <span className="flex items-center gap-1.5 text-sky-800 dark:text-[#60D5FA] font-bold">
-                          <BookOpen className="w-3.5 h-3.5 text-sky-600 dark:text-[#60D5FA]" />
+                    <div className="p-3 rounded-xl bg-sky-50/80 border border-sky-200 [transform:translateZ(20px)] shadow-sm space-y-1.5">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-slate-600">
+                        <span className="flex items-center gap-1.5 text-sky-800 font-bold">
+                          <BookOpen className="w-3.5 h-3.5 text-sky-600" />
                           Citation Preview · Page 14
                         </span>
-                        <span className="text-emerald-700 dark:text-emerald-400 font-bold">Match 96.2%</span>
+                        <span className="text-emerald-700 font-bold">Match 96.2%</span>
                       </div>
-                      <div className="p-2 rounded bg-white dark:bg-black/50 border-l-2 border-sky-600 dark:border-[#60D5FA] text-[11px] text-slate-700 dark:text-slate-300 italic font-sans leading-relaxed">
+                      <div className="p-2 rounded bg-white border-l-2 border-sky-600 text-[11px] text-slate-700 italic font-sans leading-relaxed">
                         &ldquo;...decomposition achieves sub-quadratic memory footprint while preserving perplexity bounds on long sequences.&rdquo;
                       </div>
                     </div>
@@ -297,12 +297,12 @@ export function LandingHero() {
                 </div>
 
                 {/* Telemetry Bar */}
-                <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-slate-600 dark:text-[#8BA8C8] [transform:translateZ(15px)]">
-                  <span className="flex items-center gap-1.5 text-xs text-slate-800 dark:text-white">
-                    <Zap className="w-3.5 h-3.5 text-sky-600 dark:text-[#60D5FA]" />
+                <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-slate-600 [transform:translateZ(15px)]">
+                  <span className="flex items-center gap-1.5 text-xs text-slate-800">
+                    <Zap className="w-3.5 h-3.5 text-sky-600" />
                     High-Performance Vector Engine
                   </span>
-                  <span className="text-sky-700 dark:text-[#60D5FA]">1,536-D Embeddings</span>
+                  <span className="text-sky-700">1,536-D Embeddings</span>
                 </div>
               </div>
             </div>

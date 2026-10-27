@@ -16,49 +16,49 @@ export function LandingFooter() {
   const bottomRef = useScrollReveal<HTMLDivElement>({ y: 20, duration: 0.5, delay: 0.2 });
 
   return (
-    <footer className="bg-slate-100/80 dark:bg-[#040914] border-t border-slate-200 dark:border-[#ADD8E6]/10 text-slate-600 dark:text-[#8BA8C8] text-xs py-16 transition-colors duration-300">
+    <footer className="bg-slate-100/80 border-t border-slate-200 text-slate-600 text-xs py-16 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6">
-        <div ref={linksRef} className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-slate-200 dark:border-[#ADD8E6]/10 text-left font-absans">
+        <div ref={linksRef} className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-slate-200 text-left font-absans">
           {/* Brand Info */}
           <div ref={brandRef} className="footer-col md:col-span-5 space-y-4">
             <Link href="/" className="inline-block">
               <DocuMindLogo size={36} showText={true} />
             </Link>
-            <p className="text-slate-600 dark:text-[#8BA8C8] text-xs leading-relaxed max-w-sm">
+            <p className="text-slate-600 text-xs leading-relaxed max-w-sm">
               Transform PDFs, textbooks, research papers, and business documents into searchable, grounded knowledge with generative AI.
             </p>
-            <div className="flex items-center gap-2 text-[11px] text-sky-700 dark:text-[#60D5FA] font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <div className="flex items-center gap-2 text-[11px] text-sky-700 font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
               <span>Grounded Document Intelligence · Production AI Architecture</span>
             </div>
           </div>
 
           {/* Product Links */}
           <div className="footer-col md:col-span-3 space-y-3">
-            <h5 className="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">Product Intelligence</h5>
+            <h5 className="font-bold text-slate-900 text-xs uppercase tracking-wider">Product Intelligence</h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/workspace" className="hover:text-slate-900 dark:hover:text-white transition">
+                <Link href="/workspace" className="hover:text-slate-900 transition">
                   AI Grounded Workspace
                 </Link>
               </li>
               <li>
-                <Link href="/study" className="hover:text-slate-900 dark:hover:text-white transition">
+                <Link href="/study" className="hover:text-slate-900 transition">
                   Smart Study Assistant
                 </Link>
               </li>
               <li>
-                <Link href="/compare" className="hover:text-slate-900 dark:hover:text-white transition">
+                <Link href="/compare" className="hover:text-slate-900 transition">
                   Multi-Document Comparison
                 </Link>
               </li>
               <li>
-                <Link href="/multimodal" className="hover:text-slate-900 dark:hover:text-white transition">
+                <Link href="/multimodal" className="hover:text-slate-900 transition">
                   Multimodal Visual Analysis
                 </Link>
               </li>
               <li>
-                <Link href="/evaluations" className="hover:text-slate-900 dark:hover:text-white transition">
+                <Link href="/evaluations" className="hover:text-slate-900 transition">
                   Evaluation Dashboard
                 </Link>
               </li>
@@ -67,25 +67,25 @@ export function LandingFooter() {
 
           {/* Platform & Resources */}
           <div className="footer-col md:col-span-2 space-y-3">
-            <h5 className="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">Platform</h5>
+            <h5 className="font-bold text-slate-900 text-xs uppercase tracking-wider">Platform</h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/documents" className="hover:text-slate-900 dark:hover:text-white transition">
+                <Link href="/documents" className="hover:text-slate-900 transition">
                   Document Library
                 </Link>
               </li>
               <li>
-                <Link href="/settings" className="hover:text-slate-900 dark:hover:text-white transition">
+                <Link href="/settings" className="hover:text-slate-900 transition">
                   Provider Settings
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard" className="hover:text-slate-900 dark:hover:text-white transition">
+                <Link href="/dashboard" className="hover:text-slate-900 transition">
                   Internal Dashboard
                 </Link>
               </li>
               <li>
-                <a href="#faq" className="hover:text-slate-900 dark:hover:text-white transition">
+                <a href="#faq" className="hover:text-slate-900 transition">
                   Architecture FAQ
                 </a>
               </li>
@@ -94,8 +94,8 @@ export function LandingFooter() {
 
           {/* Privacy & Trust */}
           <div className="footer-col md:col-span-2 space-y-3">
-            <h5 className="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">Privacy & Trust</h5>
-            <ul className="space-y-2 text-xs text-slate-600 dark:text-[#8BA8C8]">
+            <h5 className="font-bold text-slate-900 text-xs uppercase tracking-wider">Privacy &amp; Trust</h5>
+            <ul className="space-y-2 text-xs text-slate-600">
               <li>Local SQLite Storage</li>
               <li>Local Vector Indexing</li>
               <li>Untrusted Context Guard</li>
@@ -105,10 +105,10 @@ export function LandingFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div ref={bottomRef} className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500 dark:text-[#8BA8C8] text-left font-absans">
+        <div ref={bottomRef} className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500 text-left font-absans">
           <p>© 2026 Folio. All rights reserved. Document Intelligence Platform.</p>
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
+            <span className="flex items-center gap-1 text-slate-500">
               Built with precision for research &amp; curriculum preparation
             </span>
           </div>

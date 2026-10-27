@@ -38,7 +38,7 @@ export function FolioLogo({
                 ? 'fill-[#2563EB]'
                 : variant === 'reversed'
                 ? 'fill-[#FFFFFF]'
-                : 'fill-[#2563EB] dark:fill-[#FFFFFF]'
+                : 'fill-[#2563EB]'
             }
           />
 
@@ -50,7 +50,7 @@ export function FolioLogo({
                 ? 'fill-[#93C5FD]'
                 : variant === 'reversed'
                 ? 'fill-[#BFDBFE]'
-                : 'fill-[#93C5FD] dark:fill-[#BFDBFE]'
+                : 'fill-[#93C5FD]'
             }
           />
 
@@ -62,7 +62,7 @@ export function FolioLogo({
                 ? 'fill-[#FFFFFF]'
                 : variant === 'reversed'
                 ? 'fill-[#0F172A]'
-                : 'fill-[#FFFFFF] dark:fill-[#0F172A]'
+                : 'fill-[#FFFFFF]'
             }
           />
         </svg>
@@ -78,17 +78,17 @@ export function FolioLogo({
                   ? 'text-[#0F172A]'
                   : variant === 'reversed'
                   ? 'text-[#FFFFFF]'
-                  : 'text-[#0F172A] dark:text-[#FFFFFF]'
+                  : 'text-[#0F172A]'
               }`}
             >
               Folio
             </span>
-            <span className="text-[10px] px-1.5 py-0.5 font-bold tracking-wider uppercase text-sky-700 dark:text-[#60D5FA] bg-sky-100 dark:bg-sky-950/60 rounded border border-sky-300/60 dark:border-sky-500/30">
+            <span className="text-[10px] px-1.5 py-0.5 font-bold tracking-wider uppercase text-sky-700 bg-sky-100 rounded border border-sky-300/60">
               AI
             </span>
           </div>
           {showSubtitle && (
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-tight mt-1 transition-colors">
+            <span className="text-[10px] text-slate-500 font-medium tracking-tight mt-1 transition-colors">
               Document Intelligence
             </span>
           )}

@@ -44,19 +44,19 @@ export function FinalCTA() {
       <div className="max-w-5xl mx-auto px-6 relative z-10">
         <div
           ref={sectionRef}
-          className="rounded-3xl prism-glass p-12 sm:p-20 relative overflow-hidden border border-slate-200 dark:border-[#ADD8E6]/20 shadow-2xl shadow-sky-900/10 dark:shadow-[0_25px_80px_rgba(0,0,0,0.8)] [transform-style:preserve-3d]"
+          className="rounded-3xl prism-glass p-12 sm:p-20 relative overflow-hidden border border-slate-200 shadow-2xl shadow-sky-900/10 [transform-style:preserve-3d]"
         >
           {/* Spinning Rings */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40">
-            <div className="w-[420px] h-[420px] rounded-full border border-sky-400 dark:border-[#60D5FA]/40 shadow-[0_0_80px_rgba(96,213,250,0.3)] animate-spin [animation-duration:40s]" />
-            <div className="absolute w-[340px] h-[340px] rounded-full border border-sky-300 dark:border-[#38BDF8]/40 shadow-[0_0_60px_rgba(56,189,248,0.3)] animate-spin [animation-duration:25s] [animation-direction:reverse]" />
-            <div className="absolute w-[260px] h-[260px] rounded-full border border-sky-200 dark:border-[#ADD8E6]/50 shadow-[0_0_50px_rgba(173,216,230,0.4)]" />
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-25">
+            <div className="w-[420px] h-[420px] rounded-full border border-sky-400 shadow-[0_0_80px_rgba(96,213,250,0.3)] animate-spin [animation-duration:40s]" />
+            <div className="absolute w-[340px] h-[340px] rounded-full border border-sky-300 shadow-[0_0_60px_rgba(56,189,248,0.3)] animate-spin [animation-duration:25s] [animation-direction:reverse]" />
+            <div className="absolute w-[260px] h-[260px] rounded-full border border-sky-200 shadow-[0_0_50px_rgba(173,216,230,0.4)]" />
           </div>
 
           <div className="relative z-10 max-w-3xl mx-auto space-y-8">
             {/* Pill Tag */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 dark:bg-[#0B1936] border border-sky-200 dark:border-[#ADD8E6]/20 text-xs font-bold uppercase tracking-widest text-sky-700 dark:text-[#60D5FA] shadow-sm dark:shadow-xl backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-sky-600 dark:text-[#60D5FA]" />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-xs font-bold uppercase tracking-widest text-sky-700 shadow-sm backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-sky-600" />
               <span className="font-mono">READY TO START</span>
             </div>
 
@@ -86,7 +86,7 @@ export function FinalCTA() {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none" />
                 <span className="relative z-10 flex items-center gap-2.5">
-                  <Zap className="w-5 h-5 text-white dark:text-[#60D5FA]" />
+                  <Zap className="w-5 h-5 text-white" />
                   <span className="font-absans tracking-wide text-lg">Start for Free</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
                 </span>
@@ -94,9 +94,9 @@ export function FinalCTA() {
             </div>
 
             {/* Trust Highlights */}
-            <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600 dark:text-[#8BA8C8]">
+            <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600">
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-sky-600 dark:text-[#60D5FA]" />
+                <ShieldCheck className="w-4 h-4 text-sky-600" />
                 <span>Zero-Hallucination Fallback Architecture</span>
               </div>
               <span className="hidden sm:inline">·</span>
